@@ -2,9 +2,9 @@ import React from 'react'
 import Select from 'react-select'
 
 
-export function RSelect1({placeholder,onChange,inputName,options,defaultInputValue,defaultValue,isMulti}) {
+export function RSelect1({placeholder,onChange,inputValue,inputName,options,defaultInputValue,defaultValue,isMulti}) {
     return (
-        <Select placeholder={placeholder} isClearable={false} isMulti={isMulti} defaultValue={defaultValue} options={options}  defaultInputValue={defaultInputValue} onChange={e=>onChange(e,inputName)}/>
+        <Select placeholder={placeholder} inputValue={inputValue} isClearable={false} isMulti={isMulti} defaultValue={defaultValue} options={options}  defaultInputValue={defaultInputValue} onChange={e=>onChange(e,inputName)}/>
     )
 }
 

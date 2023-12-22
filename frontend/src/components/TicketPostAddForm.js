@@ -3,6 +3,7 @@ import { useAddPostMutation } from '../store/api/postsApi';
 import { Alert, Spinner, Form, Button, Row, Col, Card } from "react-bootstrap";
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+// import TinyMce from "./TinyMce";
 export const TicketPostAddForm = () => {
     const account = useSelector(state => state.auth.loggedUser);
     const navigate = useNavigate()
@@ -37,7 +38,7 @@ export const TicketPostAddForm = () => {
 
 
     let canSave = Object.values(newPost).every((x) => x ?? '')
-    console.log(newPost);
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         const form = event.currentTarget;
@@ -68,6 +69,7 @@ export const TicketPostAddForm = () => {
                 <Form noValidate validated={validated} onSubmit={handleSubmit}>
                     <Col>
                         <Row className="mb-1 p-1">
+                            {/* <TinyMce/> */}
                             <Form.Group as={Col} controlId="validationCustom04">
                                 <Form.Control required value={newPost?.content}
                                     as="textarea"

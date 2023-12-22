@@ -1,4 +1,4 @@
-import *  as React from 'react'
+import * as React from 'react'
 import {
   Alert,
   Badge,
@@ -16,8 +16,8 @@ import TicketPostAddBtn from './TicketPostAddBtn'
 
 
 const TicketPosts = ({ id }: Ticket) => {
-  const [page, setPage] = React.useState(1)
-  const [ticketId] = React.useState(id)
+  const [page, setPage] = React.useState<number>(1)
+  const [ticketId] = React.useState<number>(id)
   const { data: posts, isLoading } = useGetPostsQuery({ ticketId, page })
   console.log(posts);
   let content, contentHeader, contentAlert
@@ -121,3 +121,5 @@ export const PostsManager = ({ ticketid }: any) => {
 }
 
 export default PostsManager
+
+

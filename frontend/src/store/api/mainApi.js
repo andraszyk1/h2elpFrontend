@@ -2,11 +2,11 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const mainApi = createApi({
   reducerPath: 'ticketsApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:3000/' }),
+  baseQuery: fetchBaseQuery({ baseUrl: 'http://192.168.60.112:3000/' }),
   tagTypes: ['Tickets', 'UserTickets', 'Posts','TicketAccepts'],
   endpoints: (builder) => ({
     getTickets: builder.query({
-      query: () => ({ url: `tickets` }),
+      query: (query) => ({ url: `tickets`,params:query }),
       providesTags: (result) =>
         result
           ? [

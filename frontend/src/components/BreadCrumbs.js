@@ -14,12 +14,12 @@ function BreadCrumbs() {
             {tabPath.map((pathItem,i) => {
            
                 if (i===0){
-                          return      <Breadcrumb.Item  key={pathItem} href={'/dashboard'} > Strona główna</Breadcrumb.Item>
+                          return      <Breadcrumb.Item  key={pathItem+i+"one"} href={'/dashboard'} > Strona główna</Breadcrumb.Item>
                 }
                 else if(i>1){
-                   return      <Breadcrumb.Item key={pathItem} active>{pathItem}</Breadcrumb.Item>
+                   return      <Breadcrumb.Item key={pathItem+i+"two"} active>{pathItem}</Breadcrumb.Item>
                 }else{
-                   return <Breadcrumb.Item key={pathItem} href={'/'+pathItem}>{pathItem}</Breadcrumb.Item>
+                   return <Breadcrumb.Item key={pathItem+i+"three"} href={'/'+pathItem}>{pathItem}</Breadcrumb.Item>
             }}
             )
             }

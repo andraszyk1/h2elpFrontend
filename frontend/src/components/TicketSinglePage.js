@@ -2,11 +2,10 @@ import React from 'react'
 import { useGetTicketQuery, useDeleteAcceptTicketMutation, useUpdateAcceptTicketMutation } from '../store/api/mainApi'
 import { useParams } from 'react-router-dom';
 import { AiFillDelete } from 'react-icons/ai';
-import { Row, Col, Container, Card, ListGroup, Placeholder, CardBody, Button, Table, Badge, Image, Alert } from 'react-bootstrap';
+import { Row, Col, Container, Card, ListGroup, Placeholder, Button, Table, Badge, Alert } from 'react-bootstrap';
 import { TimeAgo } from './TimeAgo';
 import TicketPanelActions from './TicketPanelActions'
 import PostsManager from './TicketPosts';
-import { IoAddOutline } from 'react-icons/io5'
 // import { useSelector } from 'react-redux';
 import { TicketPostAddForm } from './TicketPostAddForm'
 import { TicketAddAccept } from './TicketAddAccept';
@@ -113,6 +112,7 @@ export default function TicketSinglePage() {
             <Card className='shadow'>
               <ListGroup variant="flush">
                 <ListGroup.Item><b>Temat</b> : {ticket?.temat}</ListGroup.Item>
+                <ListGroup.Item><b>Kategoria</b> : {ticket?.Category?.name}</ListGroup.Item>
                 <ListGroup.Item><b>Status</b> : {ticket?.status}</ListGroup.Item>
               </ListGroup>
             </Card>
@@ -141,7 +141,7 @@ export default function TicketSinglePage() {
                 <Card.Text>
                   {ticket?.tresc}
                 </Card.Text>
-                <Card.Img variant="top" src={"http://192.168.60.112:3000/uploads/" + ticket?.fileName} />
+                {ticket?.fileName ? <Card.Img variant="top" src={"http://192.168.60.112:3000/uploads/" + ticket?.fileName} /> :""}
               </Card.Body>
             </Card>
           </Row>

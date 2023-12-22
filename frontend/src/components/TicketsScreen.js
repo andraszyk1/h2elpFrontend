@@ -8,35 +8,45 @@ import TicketDeleteBtn from './TicketDeleteBtn'
 import TicketEditBtn from './TicketEditBtn'
 import TicketShowBtn from './TicketShowBtn'
 import TableCustom from './TableCustom'
-import { useGetTicketsQuery } from '../store/api/mainApi'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { selectFilteredTickets, setTicketsToFilter,setCheckedTickets,selectCheckedTickets } from '../store/slices/ticketsSlice'
+import { setCheckedTickets, setAllCheckedTickets, selectCheckedTickets, selectFilters, selectSerch } from '../store/slices/ticketsSlice'
 import { TimeAgo } from './TimeAgo'
 import TicketChangeStatusToCloseBtn from './TicketChangeStatusToCloseBtn'
+import { useGetTicketsQuery } from '../store/api/mainApi'
 
 export default function TicketsScreen() {
     const navigate = useNavigate()
     const dispatch = useDispatch()
-    const params = useParams()
-   
-    const filteredTicketsData = useSelector(selectFilteredTickets)
     const checkedTickets = useSelector(selectCheckedTickets)
-    const { data: dataTickets, isSuccess, isFetching, isError, error } = useGetTicketsQuery()
-    
-    const handleInsertTicket =()=>{
+    const filters = useSelector(selectFilters)
+    const search = useSelector(selectSerch)
+    const [ticketsLimit,setTicketsLimit]=useState(5)
+    const { data, isSuccess } = useGetTicketsQuery(
+        {
+            search: search ?? "",
+            status: filters.status ?? "",
+            category: filters.category ?? "",
+            limit: ticketsLimit??5,
+          
+        })
+
+    const handleInsertTicket = () => {
         navigate('/tickets/add')
     }
-    const handleClickCheckTickt = (id) => {
+    const handleClickCheckTicket = (id) => {
         dispatch(setCheckedTickets(id))
     }
+    const handleClickCheckTicketAll = (e) => {
+        if (e.target.checked)
+            dispatch(setAllCheckedTickets(data?.map(ticket => ticket.id)))
+        else {
+            dispatch(setAllCheckedTickets([]))
+        }
+    }
 
-    useEffect(() => {
-        if (isSuccess)
-            dispatch(setTicketsToFilter(dataTickets))
-    }, [dispatch, dataTickets, isSuccess])
     const columns = [
-        { colName: "Check", colValue: item => <><Form.Check value={item.id} checked={checkedTickets.indexOf(item.id)!==-1 ? true : false}  onChange={() => handleClickCheckTickt(item.id)} /></> },
+        { colName: <Form name='formCheckAll'><Form.Check id='checkAll' name='checkAll' onChange={(e) => handleClickCheckTicketAll(e)} /></Form>, colValue: item => <><Form.Check id={"check-" + item.id} name={"check-" + item.id} value={item.id} checked={checkedTickets.indexOf(item.id) !== -1 ? true : false} onChange={() => handleClickCheckTicket(item.id)} /></> },
         { colName: "Kategoria", colValue: item => item?.Category?.name, sort: true, valueToSort: item => item?.Category?.name },
         { colName: "Status", colValue: item => item?.status, sort: true, valueToSort: item => item?.status },
         { colName: "Twórca", colValue: item => item?.tworca?.name + " " + item?.tworca?.surname, sort: true, valueToSort: item => item?.tworca?.name },
@@ -48,45 +58,39 @@ export default function TicketsScreen() {
                 <TicketShowBtn ticketId={item.id} /> <TicketEditBtn ticketId={item.id} />   <TicketDeleteBtn ticketId={item.id} />
             </>
         },
-
     ]
-    let content, tablecustom
-
-    if (isFetching) {
-        content = <Spinner text="Loading..." />
-    } else if (isSuccess) {
-        content = filteredTicketsData.map(ticket => (
-            <Ticket key={ticket.id} ticket={ticket} />
-        ))
-        tablecustom = <TableCustom data={filteredTicketsData} columns={columns} />
-    } else if (isError) {
-        content = <Alert variant='success'>Brak Danych {error}</Alert>
-    }
+    let content = isSuccess ? <TableCustom data={data} columns={columns} /> : "brak zgłoszeń"
     return (
         <>
-
             <Navbar expand="lg" className="bg-body-tertiary">
                 <Container>
                     <Navbar.Brand href="#">
-                        <Button variant='dark' title='Dodaj zgłoszenie' size='md' onClick={handleInsertTicket}> <IoAddOutline /> Dodaj Zgłoszenie </Button>
-
-                        {checkedTickets?.length > 0 && <TicketChangeStatusToCloseBtn ticketIds={checkedTickets}> Zamknij {checkedTickets?.length} zgłoszeń  </TicketChangeStatusToCloseBtn>}
-                    
+                        <Button variant='dark' title='Dodaj zgłoszenie' size='sm' onClick={handleInsertTicket}> <IoAddOutline /> Dodaj Zgłoszenie </Button>
+                        {checkedTickets?.length > 0 && <TicketChangeStatusToCloseBtn ticketIds={checkedTickets}> Zamknij {checkedTickets?.length - 1} zgłoszeń  </TicketChangeStatusToCloseBtn>}
                     </Navbar.Brand>
                     <TicketSearch />
                 </Container>
             </Navbar>
             <Navbar className="bg-body-tertiary">
                 <Col className='fluid'>
-                    <TicketFilters filtersFromDashboard={params?.filter ? JSON.parse(params?.filter) : {}} />
+                    <TicketFilters />
                 </Col>
             </Navbar>
             <Row>
-
-
                 <Col>
-                    {tablecustom}
-                    {/* {content} */}
+                    {content}
+                </Col>
+
+            </Row>
+            <Row>
+                <Col>
+                  <Form.Select onChange={(e)=>setTicketsLimit(e.target.value)}>
+                    <option>5</option>
+                    <option>10</option>
+                    <option>15</option>
+                    <option>20</option>
+                    <option>25</option>
+                  </Form.Select>
                 </Col>
 
             </Row>

@@ -32,7 +32,7 @@ function TicketPanelActions({ ticket }) {
   const handleSubscribeTicketToMe = async (ticketId) => {
     try {
      
-        const newTicket={id:ticketId,opiekunowie:[{login:account.login}]}
+        const newTicket={id:ticketId,opiekunowie:[account.login]}
         await updateTicket(newTicket).unwrap()
         
     } catch (error) {
@@ -41,14 +41,14 @@ function TicketPanelActions({ ticket }) {
   }
   const handleUpdateStatusToRenew = async (ticketId) => {
     try {
-      await updateTicketStatus({ id:ticketId, status:"Wznowione"}).unwrap()
+      await updateTicketStatus({ id:[ticketId], status:"Wznowione"}).unwrap()
     } catch (error) {
       console.log(error);
     }
   }
   const handleUpdateStatusToClose = async (ticketId) => {
     try {
-      await updateTicketStatus({ id:ticketId, status: "Zamknięte" }).unwrap()
+      await updateTicketStatus({ id:[ticketId], status: "Zamknięte" }).unwrap()
     
     } catch (error) {
       console.log(error);

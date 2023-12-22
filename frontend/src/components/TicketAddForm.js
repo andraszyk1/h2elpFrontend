@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import { useAddTicketMutation } from '../store/api/mainApi';
 import { useGetUsersQuery } from '../store/api/usersApi';
 import { useGetCategoriesQuery } from '../store/api/categoriesApi';
@@ -9,13 +9,12 @@ import { useSelector } from 'react-redux';
 import AsyncSelectUsers from "./AsyncSelectUsers";
 export const TicketAddForm = () => {
     const account = useSelector(state => state.auth.loggedUser);
-    const [inputValue, setInputValue] = useState('');
+    const [inputValue] = useState('');
     const navigate = useNavigate()
     const [validated, setValidated] = useState(false);
     const [file, setFile] = useState(null)
     const [addTicket, { isLoading: isLoadingAddTicket }] = useAddTicketMutation();
     const { data: kategorieData, isSuccess: isSuccessCategories, isError: isErrorCategories, isLoading: isLoadingCategories } = useGetCategoriesQuery();
-    const { data: usersData, isSuccess: isSuccessUsers, isError: isErrorUsers, isLoading: isLoadingUsers } = useGetUsersQuery({ search: inputValue, limit: 10 }, { refetchOnMountOrArgChange: true });
     const [newTicket, setNewTicket] = useState({
         CategoryId: "", tworcaId: account.login, zglaszajacyId: "", temat: "", opiekunowie: [], tresc: ""
     })
@@ -26,13 +25,9 @@ export const TicketAddForm = () => {
 
     let value, name, target;
     target = e.target ? e.target : e;
-    if (Array.isArray(e)) {
+    if (Array.isArray(e)&&input==='opiekunowie') {
         name = input
-        value = e.map((item) => {
-            return {
-                opiekunId: item.value
-            }
-        })
+        value = e.map(item => item.value)
     }
     else {
         value = target.type === 'checkbox' ? target.checked : target.value;
@@ -63,12 +58,7 @@ export const TicketAddForm = () => {
                 data.append("opiekunowie", JSON.stringify(newTicket.opiekunowie))
                 data.append("tresc", newTicket.tresc)
                 data.append('file', file);
-                for (const value of data.values()) {
-
-                    if (typeof value === 'object') {
-                        console.log("is Array", value);
-                    }
-                }
+           
                 await addTicket(data).unwrap();
                 navigate("/tickets")
             }
@@ -79,7 +69,7 @@ export const TicketAddForm = () => {
     }
  
     let content, optionsKategorie, selectCategory;
-    if (isSuccessCategories && isSuccessUsers) {
+    if (isSuccessCategories) {
         optionsKategorie = mapDataForSelects(kategorieData, { value: item => item.id, name: item => item.name })
         selectCategory = <RSelect1 onChange={handleInputChange} options={optionsKategorie} inputName="CategoryId" />;
 
@@ -151,10 +141,10 @@ export const TicketAddForm = () => {
                     </Card.Body>
                 </Card>
             </>
-    } else if (isLoadingCategories || isLoadingUsers) {
+    } else if (isLoadingCategories) {
         content = <Spinner />
     }
-    else if (isErrorCategories || isErrorUsers) {
+    else if (isErrorCategories) {
         content = <Alert>Problem z pobraniem kategori lub uzytkownika</Alert>
     }
 
@@ -162,8 +152,6 @@ export const TicketAddForm = () => {
 
     return (
         <>
-        {console.log("isSuccessUsers",isSuccessUsers)}
- 
             {content}
         </>
 

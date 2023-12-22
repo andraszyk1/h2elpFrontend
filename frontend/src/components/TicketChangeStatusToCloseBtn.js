@@ -10,8 +10,9 @@ function TicketChangeStatusToCloseBtn({ ticketIds,children }) {
   
   const handleUpdateStatusToClose = async (ticketIds) => {
     try {
+      
       await updateTicketStatus({ id:ticketIds, status: "Zamknięte" }).unwrap()
-      dispatch(removeCheckedTickets([]))
+      dispatch(removeCheckedTickets())
     } catch (error) {
       console.log(error);
     }
@@ -20,7 +21,7 @@ function TicketChangeStatusToCloseBtn({ ticketIds,children }) {
 
    
       <span className='m-2'>
-       <Button variant='dark' onClick={()=>handleUpdateStatusToClose(ticketIds)} style={{cursor:'pointer'}}>   <small> <MdStop/>{children}</small></Button>
+       <Button variant='dark' size='sm' onClick={()=>handleUpdateStatusToClose(ticketIds)} style={{cursor:'pointer'}}>   <small> <MdStop/>{children}</small></Button>
      
       </span>
    

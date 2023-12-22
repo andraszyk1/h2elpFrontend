@@ -16,21 +16,21 @@ export function mapDataFromSelectToOpiekun(data, config) {
 }
 const AsyncSelectUsers = ({ isMulti, onChange, inputName, defaultInputValue, defaultValue }) => {
   const [inputValue, setInputValue] = useState('');
-  const { data, error, isLoading } = useGetUsersQuery({ search: inputValue, limit: 10 });
+  const { data } = useGetUsersQuery({ search: inputValue, limit: 10 });
   // console.log(defaultInputValue)
 
 
   const loadOptions = async (inputValue, callback) => {
     setInputValue(inputValue); // Ustaw nową wartość dla hooka zapytania
-    const mapedData = mapDataForSelects(data, { value: item => item.login, name: item => item.name + " " + item.surname })
+    const mapedData = mapDataForSelects(data, { value: item => item.login, name: item => item.name + " " + item.surname + " " +"("+item.login+")" })
     callback(mapedData)
   };
 
   return (
-    <AsyncSelect isClearable={true}
+    <AsyncSelect
       isMulti={isMulti}
-      defaultInputValue={defaultInputValue}
-    defaultValue={defaultValue || ''}
+      defaultInputValue={defaultInputValue ||''}
+      defaultValue={defaultValue}
       onChange={e => onChange(e, inputName)}
       loadOptions={(inputValue, callback) => loadOptions(inputValue, callback)}
       placeholder="Users"

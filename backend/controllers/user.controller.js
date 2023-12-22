@@ -1,6 +1,6 @@
 
-import { Op, Sequelize, where } from 'sequelize';
-import { User as model,TicketsAccepts } from '../models/index.js';
+import { Op, Sequelize } from 'sequelize';
+import { User as model } from '../models/index.js';
 import { ad } from './activedirectoryConfig.js';
 
 
@@ -40,23 +40,23 @@ export async function upsert(req, res) {
             })
         }
       })
-     
+
 
     }
   })
-  const findAgain=  await model.findAll();
-  findAgain.forEach(async user=>{
-    const przelozonyUsera =  await model.findOne({
+  const findAgain = await model.findAll();
+  findAgain.forEach(async user => {
+    const przelozonyUsera = await model.findOne({
       where: {
         rcp: user.przelozony
       }
     })
-    const userToUpdate=await model.findOne({where:{login:user.dataValues.login}});
-    await userToUpdate.update({przelozonyObject:przelozonyUsera ?? ""})
-  
+    const userToUpdate = await model.findOne({ where: { login: user.dataValues.login } });
+    await userToUpdate.update({ przelozonyObject: przelozonyUsera ?? "" })
+
   })
   await model.findAll({
-    attributes: ['name', 'surname','login']
+    attributes: ['name', 'surname', 'login']
   }).then(data => {
     res.send(data);
   })
@@ -74,7 +74,7 @@ export async function create(req, res) {
   const newModel = { name: req.body.name, surname: req.body.surname, email: req.body.email };
   await model.create(newModel).then(data => {
 
-  
+
     res.send(data);
   })
     .catch(err => {
@@ -86,21 +86,22 @@ export async function create(req, res) {
 }
 
 export async function findAll(req, res, next) {
-  console.log(req.query);
   await model.findAll({
-    attributes: ['name', 'surname','login','rcp'],
-    limit:parseInt(req.query.limit)?parseInt(req.query.limit):1200,
+    attributes: ['name', 'surname', 'login', 'rcp'],
+    limit: parseInt(req.query.limit) ?? 1200,
     where:
-    Sequelize.and(
-      Sequelize.or(
-        {  name:{[Op.like] :'%'+req.query.search+'%'} },
-        { surname: {[Op.like]:'%'+req.query.search+'%'} },
-        { login: {[Op.like]:'%'+req.query.search+'%'} },
-      )
-    ), 
-    
+      Sequelize.and(
+ 
+        Sequelize.or(
+          { name: { [Op.substring]: req.query.search } },
+          { surname: { [Op.substring]: req.query.search } },
+          { login: { [Op.substring]: req.query.search } },
+          { rcp: { [Op.substring]: req.query.search } },
+        )
+      ),
+
   }
-  
+
   ).then(data => {
     res.send(data);
   })

@@ -1,7 +1,6 @@
-import React, { useEffect, useMemo, useRef, useState } from "react"
-import { Card, Pagination } from "react-bootstrap";
+import React, {  useMemo, useState } from "react"
+import {  Pagination } from "react-bootstrap";
 import Table from 'react-bootstrap/Table';
-import { TimeAgo } from "./TimeAgo";
 import { setSort } from "../store/slices/ticketsSlice";
 import { useDispatch } from "react-redux";
 import { FaRegArrowAltCircleDown, FaArrowAltCircleUp } from "react-icons/fa";
@@ -15,11 +14,11 @@ function TableCustom({ data, columns }) {
   const [countPages, setCountPages] = useState(Math.ceil(dataTotal / dataPerPage))
 
 useMemo(()=>{
-  console.log(dataTotal);
+  // console.log(dataTotal);
   setCurrentPage(1)
   setDataPerPage(10)
   setCountPages(Math.ceil(dataTotal / dataPerPage))
-},[dataTotal])
+},[dataTotal,dataPerPage])
   const handleThAscSortClick = (colName, colValue) => {
     setOrder('asc')
     setSortedValue(colName)
@@ -73,9 +72,9 @@ useMemo(()=>{
       <Pagination>
         <Pagination.First />
         <Pagination.Prev />
-        {Array(countPages).fill(0).map((_, i) => {
-          console.log(i)
-        })}
+        {/* {Array(countPages).fill(0).map((_, i) => {
+          // console.log(i)
+        })} */}
         {/*     
       <Pagination.Ellipsis />
 

@@ -1,14 +1,16 @@
 import React, { useEffect, useState ,useRef} from 'react'
 import { Container, Row, Col, Card, Button, Spinner, Badge, Table } from 'react-bootstrap';
 import { useGetTicketsByTworcaIdQuery, useGetTicketsCountWithStatusQuery } from '../store/api/mainApi'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { TimeAgo } from './TimeAgo';
 
 import { useNavigate } from 'react-router-dom';
 import { MdArrowBack, MdArrowForward, MdBook } from 'react-icons/md'
+import { setFiltersToTickets } from '../store/slices/ticketsSlice';
 function Dashboard() {
   const [page, setPage] =useState(1)
   const navigate = useNavigate();
+  const dispatch=useDispatch()
 const refCard1=useRef(null)
   const refCard2=useRef(null)
   const refCard3=useRef(null)
@@ -87,7 +89,9 @@ const handleonMouseLeaveCard3=()=>{
 
 }
 const handleOnClick=(status)=>{
-navigate(`/tickets/{"status":"${status}","category":""}`)
+  dispatch(setFiltersToTickets({status:status,category:""}))
+
+navigate(`/tickets/`)
 }
 
 

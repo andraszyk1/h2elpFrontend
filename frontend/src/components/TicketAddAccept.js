@@ -5,6 +5,7 @@ import { useGetUsersQuery } from "../store/api/usersApi";
 import RSelect1, { mapDataForSelects } from "./RSelect1";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
+import AsyncSelectUsers from "./AsyncSelectUsers";
 
 
 
@@ -15,14 +16,16 @@ export const TicketAddAccept = () => {
     const [messageToast, setMessageToast] = useState('');
     const navigate = useNavigate()
     const [userAcceptId, setUserAcceptId] = useState("")
+    const [selectedUser, setSelectedUser] = useState("")
     const [ticketAcceptId] = useState(id)
     const [addAccept] = useAddAcceptTicketMutation()
     const [updateTicketStatus] = useUpdateTicketStatusMutation();
-    const { data: users, isLoading: isLoadingGetUsers, isSuccess: isSuccessGetUsers } = useGetUsersQuery()
+
 
 
     const handleOnSubmit = async (e) => {
         e.preventDefault();
+      
         console.log(userAcceptId, ticketAcceptId);
         try {
             const response = await addAccept({ status: "Do Akceptacji", userAcceptId, ticketAcceptId }).unwrap()
@@ -30,6 +33,7 @@ export const TicketAddAccept = () => {
             console.log(response);
             const { success, message } = response;
             if (success) {
+                setSelectedUser("")
                 navigate(`/tickets/${id}`)
             } else {
                 setShowToast(true)
@@ -41,12 +45,11 @@ export const TicketAddAccept = () => {
         }
     }
     let content, toast
-    if (isLoadingGetUsers) {
-        content = <Spinner />
-    } else if (isSuccessGetUsers) {
-        let optionsUsers, selectUser;
-        optionsUsers = mapDataForSelects(users, { value: item => item.login, name: item => item.name + " " + item.surname + "(" + item.login + ")" })
-        selectUser = <RSelect1 options={optionsUsers} onChange={(e) => setUserAcceptId(e.value)} />
+
+   
+        let selectUser;
+    
+        selectUser = <AsyncSelectUsers onChange={(e) => setUserAcceptId(e.value)} />
 
 
         toast = 
@@ -78,9 +81,7 @@ export const TicketAddAccept = () => {
        
 
         </>
-    } else {
-        console.log("error");
-    }
+ 
 
 
     return (

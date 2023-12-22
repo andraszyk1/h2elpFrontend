@@ -1,6 +1,6 @@
 
 
-import { Op } from "sequelize";
+import { Op, Sequelize } from "sequelize";
 import { db } from "../models/db.config.js";
 import { Ticket as model, Category, User, TicketsOpiekunowie, TicketsAccepts, Post } from "../models/index.js";
 import { createTicketMail } from "./nodemailer.js";
@@ -16,27 +16,27 @@ const storage = multer.diskStorage({
         cb(null, file.fieldname + '-' + uniqueSuffix)
     }
 })
-
+const upload = multer({
+    storage: storage,
+    fileFilter: (req, file, cb) => {
+        if (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg") {
+            cb(null, true);
+        } else {
+            cb(null, false);
+            return cb(new Error('Only .png, .jpg and .jpeg format allowed!'));
+        }
+    }
+})
 
 
 export async function create(req, res) {
-    const upload = multer({
-        storage: storage,
-        fileFilter: (req, file, cb) => {
-            if (file.mimetype == "image/png" || file.mimetype == "image/jpg" || file.mimetype == "image/jpeg") {
-                cb(null, true);
-            } else {
-                cb(null, false);
-                return cb(new Error('Only .png, .jpg and .jpeg format allowed!'));
-            }
-        }
-    })
+
     upload.single('file')(req, res, async function (err) {
         if (err) {
             return res.status(400).send({ message: err.message });
         }
 
-   
+
         try {
 
             let newTicket = await model.create({
@@ -54,8 +54,7 @@ export async function create(req, res) {
 
             });
             JSON.parse(req.body.opiekunowie).map(async opiekun => {
-                
-                const findOpiekunId = await User.findByPk(opiekun.opiekunId)
+                const findOpiekunId = await User.findByPk(opiekun)
                 await newTicket.addOpiekunowie(findOpiekunId, { as: "opiekunowie", foreignKey: "opiekunId", through: TicketsOpiekunowie })
             })
 
@@ -92,10 +91,27 @@ export async function create(req, res) {
 
 
 export function findAll(req, res) {
+    console.log(req.query);
     model.findAll({
+        limit: Number(req.query?.limit),
+        where: {
+            [Op.or]: [{
+                temat: { [Op.substring]: req.query.search },
+                status: { [Op.substring]: req.query.status },
+            }]
+        }
+        ,
         include: [
-            { model: User, as: "tworca" },
-            { model: Category },
+            {
+                model: User, as: "tworca",
+
+            },
+            {
+                model: Category,
+                where: {
+                    name: { [Op.substring]: req.query.category }
+                }
+            },
         ],
         order: db.literal("`updatedAt` DESC")
     }).then(data => {
@@ -193,7 +209,7 @@ export const update = async (req, res) => {
             const opiekunowieOld = await ticket.getOpiekunowie();
             const removeOpiekunowie = await ticket.removeOpiekunowie(opiekunowieOld);
             const awaitupdataOpiekunowie = await req.body.opiekunowie.forEach(async (opiekun) => {
-                const findOpiekunId = await User.findByPk(opiekun.login)
+                const findOpiekunId = await User.findByPk(opiekun)
                 await ticket.addOpiekunowie(findOpiekunId, { as: "opiekunowie", foreignKey: "opiekunId", through: TicketsOpiekunowie })
             });
 
@@ -247,7 +263,7 @@ export const updateStatus = async (req, res) => {
     await model.update({ status: req.body.status }, {
         fields: ['status'],
         where: {
-            id:{[Op.in] :[req.body.id]} 
+            id:{[Op.in] : req.body.id}
         }
     }).then(num => {
         if (num == 1) {

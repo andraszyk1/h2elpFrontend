@@ -1,4 +1,4 @@
-import { mainApi } from '../api/mainApi'
+import {mainApi} from '../api/mainApi'
 
 export const postStatuses = ['draft', 'published', 'pending_review'] as const
 export interface User{
@@ -7,7 +7,7 @@ export interface User{
     surname:string
 }
 export interface Ticket{
-id:any
+id:number
 }
 export interface Post {
   content: string,

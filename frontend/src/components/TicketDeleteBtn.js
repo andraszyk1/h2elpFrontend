@@ -5,7 +5,6 @@ import { AiFillDelete } from 'react-icons/ai';
 function TicketDeleteBtn({ ticketId }) {
     const [deleteTicket, { isLoading: isLoadingDeleteTicket }] = useDeleteTicketMutation();
     const handleDeleteTicket = async () => {
-        console.log("handleDeleteTicket");
         try {
             await deleteTicket(ticketId)
         } catch (error) {
