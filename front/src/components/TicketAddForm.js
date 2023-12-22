@@ -1,6 +1,5 @@
 import React, { useState } from "react"
 import { useAddTicketMutation } from '../store/api/mainApi';
-import { useGetUsersQuery } from '../store/api/usersApi';
 import { useGetCategoriesQuery } from '../store/api/categoriesApi';
 import { Alert, Spinner, Form, Button, Row, Col, Card } from "react-bootstrap";
 import { RSelect1, mapDataForSelects } from "./RSelect1";

@@ -1,11 +1,11 @@
 import React, { useEffect, useState ,useRef} from 'react'
 import { Container, Row, Col, Card, Button, Spinner, Badge, Table } from 'react-bootstrap';
-import { useGetTicketsByTworcaIdQuery, useGetTicketsCountWithStatusQuery } from '../store/api/mainApi'
+import { useGetTicketsByTworcaIdQuery, useGetTicketsCountWithStatusQuery  } from '../store/api/mainApi'
 import { useDispatch, useSelector } from 'react-redux';
 import { TimeAgo } from './TimeAgo';
 
 import { useNavigate } from 'react-router-dom';
-import { MdArrowBack, MdArrowForward, MdBook } from 'react-icons/md'
+import { MdArrowBack, MdArrowForward } from 'react-icons/md'
 import { setFiltersToTickets } from '../store/slices/ticketsSlice';
 function Dashboard() {
   const [page, setPage] =useState(1)
@@ -117,7 +117,7 @@ navigate(`/tickets/`)
 
               />
               <MdArrowForward style={{ cursor: 'pointer', width: "1.5rem", height: "1.5rem" }}
-                onClick={() => setPage((prev) => page === dataTicketsUser.totalPages ? prev : prev + 1)}
+                onClick={() => setPage((prev) => page === dataTicketsUser?.totalPages ? prev : prev + 1)}
               />
 
             </Col>

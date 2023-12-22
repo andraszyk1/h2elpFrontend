@@ -8,7 +8,7 @@ import { AiFillDelete, AiFillEdit } from 'react-icons/ai';
 import { TbSquareArrowUp, TbSquareArrowDown } from 'react-icons/tb'
 import { TimeAgo } from "./TimeAgo";
 import {Link,useNavigate} from 'react-router-dom'
-import { useDeleteTicketMutation } from "../store/api/mainApi";
+import { useDeleteTicketMutation } from "../store/api/mainApi"
 export function Ticket({ ticket }) {
     const navigate = useNavigate();
     const [isExtended, setIsExtended] = useState(false);

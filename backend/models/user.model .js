@@ -50,7 +50,7 @@ export const User= db.define("Users",{
         allowNull:true,
     },
     przelozonyObject:{
-        type:DataTypes.JSON,
+        type:DataTypes.STRING,
         allowNull:true,
     },
     stanowisko:{

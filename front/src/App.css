@@ -1,4 +1,3 @@
-
 .App {
   text-align: center;
 }
@@ -36,7 +35,4 @@
   to {
     transform: rotate(360deg);
   }
-}
-.nav-link,.nav-item {
-  text-decoration: none;
 }

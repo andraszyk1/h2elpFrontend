@@ -141,7 +141,7 @@ export default function TicketSinglePage() {
                 <Card.Text>
                   {ticket?.tresc}
                 </Card.Text>
-                {ticket?.fileName ? <Card.Img variant="top" src={"http://192.168.60.112:3000/uploads/" + ticket?.fileName} /> :""}
+                {ticket?.fileName ? <Card.Img variant="top" src={"http://localhost:3000/uploads/" + ticket?.fileName} /> :""}
               </Card.Body>
             </Card>
           </Row>
