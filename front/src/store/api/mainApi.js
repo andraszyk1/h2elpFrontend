@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const mainApi = createApi({
   reducerPath: 'ticketsApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:3000/' }),
+  baseQuery: fetchBaseQuery({ baseUrl: 'https://hidden-dusk-87411-ba77d74a1dd4.herokuapp.com/' }),
   tagTypes: ['Tickets', 'UserTickets', 'Posts','TicketAccepts'],
   endpoints: (builder) => ({
     getTickets: builder.query({
