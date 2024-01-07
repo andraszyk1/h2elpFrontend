@@ -1,6 +1,6 @@
-import { Row, Col, Button, Spinner, Alert, Navbar, Container, Form } from 'react-bootstrap'
-import { Ticket } from './Ticket'
-import React, { useEffect, useState } from "react"
+import { Row, Col, Button, Spinner, Navbar, Alert, Container, Form } from 'react-bootstrap'
+
+import React, { useState } from "react"
 import { IoAddOutline } from 'react-icons/io5'
 import { TicketSearch } from './TicketSearch'
 import { TicketFilters } from './TicketFilters'
@@ -21,14 +21,14 @@ export default function TicketsScreen() {
     const checkedTickets = useSelector(selectCheckedTickets)
     const filters = useSelector(selectFilters)
     const search = useSelector(selectSerch)
-    const [ticketsLimit,setTicketsLimit]=useState(5)
-    const { data, isSuccess } = useGetTicketsQuery(
+    const [ticketsLimit, setTicketsLimit] = useState(5)
+    const { data, isSuccess, isLoading } = useGetTicketsQuery(
         {
             search: search ?? "",
             status: filters.status ?? "",
             category: filters.category ?? "",
-            limit: ticketsLimit??5,
-          
+            limit: ticketsLimit ?? 5,
+
         })
 
     const handleInsertTicket = () => {
@@ -59,7 +59,11 @@ export default function TicketsScreen() {
             </>
         },
     ]
-    let content = isSuccess ? <TableCustom data={data} columns={columns} /> : "brak zgłoszeń"
+
+    let content
+    if (isLoading) content= <Spinner />
+    else if (isSuccess) content = <TableCustom data={data} columns={columns} />
+    else content = <Alert>"brak zgłoszeń"</Alert>
     return (
         <>
             <Navbar expand="lg" className="bg-body-tertiary">
@@ -84,13 +88,13 @@ export default function TicketsScreen() {
             </Row>
             <Row>
                 <Col>
-                  <Form.Select onChange={(e)=>setTicketsLimit(e.target.value)}>
-                    <option>5</option>
-                    <option>10</option>
-                    <option>15</option>
-                    <option>20</option>
-                    <option>25</option>
-                  </Form.Select>
+                    <Form.Select onChange={(e) => setTicketsLimit(e.target.value)}>
+                        <option>5</option>
+                        <option>10</option>
+                        <option>15</option>
+                        <option>20</option>
+                        <option>25</option>
+                    </Form.Select>
                 </Col>
 
             </Row>
