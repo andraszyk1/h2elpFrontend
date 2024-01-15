@@ -6,6 +6,7 @@ import { RSelect1, mapDataForSelects } from "./RSelect1";
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import AsyncSelectUsers from "./AsyncSelectUsers";
+import { FormZasobySieciowe } from "./Forms/FormZasobySieciowe";
 export const TicketAddForm = () => {
     const account = useSelector(state => state.auth.loggedUser);
     const [inputValue] = useState('');
@@ -74,6 +75,7 @@ export const TicketAddForm = () => {
 
         content =
             <>
+            <FormZasobySieciowe/>
                 <Card className="shadow m-2">
                     <Card.Header><b>Dodaj zgłoszenie</b></Card.Header>
                     <Card.Body>

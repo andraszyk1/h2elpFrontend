@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import AsyncSelect from 'react-select/async';
 import { useGetUsersQuery } from '../store/api/usersApi';
 
@@ -15,7 +15,7 @@ export function mapDataFromSelectToOpiekun(data, config) {
   return newmap;
 }
 const AsyncSelectUsers = ({ isMulti, onChange, inputName, defaultInputValue, defaultValue }) => {
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState('a');
   const { data } = useGetUsersQuery({ search: inputValue, limit: 10 });
   // console.log(defaultInputValue)
 
