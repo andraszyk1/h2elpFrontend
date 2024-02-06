@@ -21,7 +21,7 @@ function App() {
   return (
     <Router>
       <>
-        <NavBar />
+        <NavBar  />
         <Container>
           <PrivateRoutes>
               <Route path='/logout' element={<Logout />} />

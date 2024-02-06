@@ -7,9 +7,9 @@ export function RSelect1({ placeholder, onChange, inputValue, inputName, options
         <Select
             placeholder={placeholder}
             inputValue={inputValue}
-            isClearable={false}
+            isClearable
             isMulti={isMulti}
-            defaultValue={defaultValue}
+            defaultValue
             options={options}
             defaultInputValue={defaultInputValue}
             onChange={e => onChange(e, inputName)} />
