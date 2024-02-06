@@ -11,3 +11,28 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+a{
+  text-decoration: none;
+  color: black;
+}
+.breadcrumb{
+  font-size: 0.7rem;
+}
+.breadcrumb.active {
+  color: rgba(20,20,20,0.7);
+}
+.breadcrumb.noactive::after {
+  content: "/";
+  color: rgba(20,20,20,0.7);
+  margin-left: 1rem;
+}
+table{
+  font-size: 0.8rem;
+}
+.card-hover:hover{
+  color:white;
+  background-color: dimgrey;
+  cursor: pointer;
+}
+
+

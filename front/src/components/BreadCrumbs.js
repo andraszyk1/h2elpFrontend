@@ -1,32 +1,47 @@
-import React from 'react'
-import Breadcrumb from 'react-bootstrap/Breadcrumb';
-import { useLocation ,useM} from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 function BreadCrumbs() {
     const location = useLocation()
     const currPath = location.pathname
-    const tabPath = currPath.split("/")
+    const tabPath = ["dashboard", ...currPath.split("/")]
+    const newtabPath = tabPath.flatMap((x)=> {
+        if (x === "dashboard") {
+            return { label: "Strona główna", link: x }
+        }
+        if (x === "tickets") {
+            return { label: "Zgłoszenia", link: x }
+        }
+        if (x === "users") {
+            return { label: "Użytkownicy", link: x }
+        }
+        if (x === "edit" || x === "accept" ) {
+            return { label: "", link: "" }
+        }
+        if (x === "add") {
+            return { label: "Dodaj", link: "" }
+        }
+        return { label: x, link: x }
+    }).filter(x => x.label);
 
     return (
-        <>
-        
-        <Breadcrumb>
-           
-            {tabPath.map((pathItem,i) => {
-           
-                if (i===0){
-                          return      <Breadcrumb.Item  key={pathItem+i+"one"} href={'/dashboard'} > Strona główna</Breadcrumb.Item>
+        <div className="nav-item">
+            {newtabPath.map((path, i) => {
+                if (i === newtabPath.length - 1) {
+                    return (
+                            <div key={i}  className=" breadcrumb active">
+                                {path.label}
+                            </div>
+                    )
                 }
-                else if(i>1){
-                   return      <Breadcrumb.Item key={pathItem+i+"two"} active>{pathItem}</Breadcrumb.Item>
-                }else{
-                   return <Breadcrumb.Item key={pathItem+i+"three"} href={'/'+pathItem}>{pathItem}</Breadcrumb.Item>
-            }}
-            )
-            }
-
-
-        </Breadcrumb>
-        </>
+                return (
+                
+                        <div key={i} className="pe-2 breadcrumb noactive" >
+                            <Link to={"/" + path.link}>{path.label}</Link>
+                        </div>
+                     
+                  
+                )
+            })}
+        </div>
     )
 }
 

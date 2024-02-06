@@ -1,4 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+//baseUrl: 'https://hidden-dusk-87411-ba77d74a1dd4.herokuapp.com/'
+//baseUrl: 'http://192.168.60.112:3000/'
 
 export const mainApi = createApi({
   reducerPath: 'ticketsApi',

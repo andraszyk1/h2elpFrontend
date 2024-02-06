@@ -1,9 +1,8 @@
-import React, {  useMemo, useState } from "react"
-import {  Pagination } from "react-bootstrap";
-import Table from 'react-bootstrap/Table';
-import { setSort } from "../store/slices/ticketsSlice";
+import { useMemo, useState } from "react";
+import { Table } from "react-bootstrap";
+import { FaArrowAltCircleUp, FaRegArrowAltCircleDown } from "react-icons/fa";
 import { useDispatch } from "react-redux";
-import { FaRegArrowAltCircleDown, FaArrowAltCircleUp } from "react-icons/fa";
+import { setSort } from "../store/slices/ticketsSlice";
 function TableCustom({ data, columns }) {
   const dispatch = useDispatch()
   const [order, setOrder] = useState('asc')
@@ -12,13 +11,13 @@ function TableCustom({ data, columns }) {
   const [currentPage, setCurrentPage] = useState(1)
   const [dataPerPage, setDataPerPage] = useState(10)
   const [countPages, setCountPages] = useState(Math.ceil(dataTotal / dataPerPage))
-
-useMemo(()=>{
-  // console.log(dataTotal);
-  setCurrentPage(1)
-  setDataPerPage(10)
-  setCountPages(Math.ceil(dataTotal / dataPerPage))
-},[dataTotal,dataPerPage])
+  const [ticketsLimit, setTicketsLimit] = useState(5)
+  useMemo(() => {
+    // console.log(dataTotal);
+    setCurrentPage(1)
+    setDataPerPage(10)
+    setCountPages(Math.ceil(dataTotal / dataPerPage))
+  }, [dataTotal, dataPerPage])
   const handleThAscSortClick = (colName, colValue) => {
     setOrder('asc')
     setSortedValue(colName)
@@ -31,7 +30,7 @@ useMemo(()=>{
   }
   return (
     <>
-      <Table striped="rows" size="sm" responsive={true}>
+      <Table striped="rows" size="md" responsive={true}>
         <thead>
           <tr>
             {columns.map((col, i) => {
@@ -63,19 +62,16 @@ useMemo(()=>{
               </tr>)
             })
           }
-
-
-
-
         </tbody>
       </Table>
-      <Pagination>
+       {/* <Pagination>
         <Pagination.First />
-        <Pagination.Prev />
-        {/* {Array(countPages).fill(0).map((_, i) => {
-          // console.log(i)
-        })} */}
-        {/*     
+        <Pagination.Prev /> 
+         {Array(countPages).fill(0).map((_, i) => {
+          console.log(i)
+          return _
+        })} 
+             
       <Pagination.Ellipsis />
 
       <Pagination.Item>{10}</Pagination.Item>
@@ -87,8 +83,19 @@ useMemo(()=>{
       <Pagination.Ellipsis />
       <Pagination.Item>{20}</Pagination.Item>
       <Pagination.Next />
-      <Pagination.Last /> */}
-      </Pagination>
+      <Pagination.Last /> 
+      </Pagination> 
+      <Row>
+                <Col className='fluid'>
+                    <Form.Select size="sm" onChange={(e) => setTicketsLimit(e.target.value)}>
+                        <option>1</option>
+                        <option>5</option>
+                        <option>15</option>
+                        <option>20</option>
+                        <option>25</option>
+                    </Form.Select>
+                </Col>
+            </Row> */}
     </>
   );
 }

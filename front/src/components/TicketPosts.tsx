@@ -10,16 +10,15 @@ import {
   Spinner
 } from 'react-bootstrap'
 import { MdArrowBack, MdArrowForward, MdBook } from 'react-icons/md'
-import { useGetPostsQuery, Ticket } from '../store/api/postsApi'
-import { TimeAgo } from './TimeAgo'
+import { Ticket, useGetPostsQuery } from '../store/api/postsApi'
 import TicketPostAddBtn from './TicketPostAddBtn'
+import { TimeAgo } from './TimeAgo'
 
 
 const TicketPosts = ({ id }: Ticket) => {
   const [page, setPage] = React.useState<number>(1)
   const [ticketId] = React.useState<number>(id)
   const { data: posts, isLoading } = useGetPostsQuery({ ticketId, page })
-  console.log(posts);
   let content, contentHeader, contentAlert
   if (isLoading) {
     content = <Spinner />
@@ -30,17 +29,13 @@ const TicketPosts = ({ id }: Ticket) => {
     content = ""
     contentHeader = <Card style={{ padding: 0 }}>
       <Card.Header>
-
         <Col sm={4} lg={4} xs={4} xl={4} xxl={4}>
           <TicketPostAddBtn ticketId={ticketId} />
           <b>Komentarze:</b> {``}
         </Col>
         <Col sm={4} lg={4} xs={4} xl={4} xxl={4}>
-
         </Col>
         <Col sm={4} lg={4} xs={4} xl={4} xxl={4} style={{ textAlign: "right" }}>
-
-
           <button>
             <MdArrowBack style={{ cursor: 'pointer' }}
               onClick={() => setPage((prev) => prev - 1)}
@@ -48,11 +43,8 @@ const TicketPosts = ({ id }: Ticket) => {
           </button>
           <MdArrowForward style={{ cursor: 'pointer' }}
             onClick={() => setPage((prev) => prev + 1)}
-
           />
-
         </Col>
-
       </Card.Header>
     </Card>
   }
@@ -81,22 +73,22 @@ const TicketPosts = ({ id }: Ticket) => {
           </Row>
         </Card.Header>
 
-       {Array.from(posts?.rows).length ?
-        <ListGroup>
-          {posts?.rows.map(({ content, status, createdAt, User }, i) => (
-            <ListGroupItem key={i}>
-              <MdBook />
-              {User.name + " " + User.surname}{' '}
-              {content}{' '}
-              <Badge>{status}</Badge>{' '}
-              <small><TimeAgo timestamp={createdAt} /></small>
-            </ListGroupItem>
-          ))}
-        </ListGroup>
-        :
-        <Alert  className='m-2 bg-light border-danger small' >Brak dodanych komentarzy</Alert>
-          }
-        </Card>
+        {Array.from(posts?.rows).length ?
+          <ListGroup>
+            {posts?.rows.map(({ content, status, createdAt, User }, i) => (
+              <ListGroupItem key={i}>
+                <MdBook />
+                {User.name + " " + User.surname}{' '}
+                {content}{' '}
+                <Badge>{status}</Badge>{' '}
+                <small><TimeAgo timestamp={createdAt} /></small>
+              </ListGroupItem>
+            ))}
+          </ListGroup>
+          :
+          <Alert className='m-2 bg-light border-danger small' >Brak dodanych komentarzy</Alert>
+        }
+      </Card>
       </>
   }
   return (

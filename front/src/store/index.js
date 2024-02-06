@@ -4,10 +4,12 @@ import usersReducer from './slices/usersSlice'
 import authReducer from './slices/authSlice'
 import ticketsReducer from './slices/ticketsSlice'
 import categoriesReducer from './slices/categoriesSlice'
+import toastReducer from './slices/toastSlice'
 import { mainApi } from './api/mainApi'
 
 const store = configureStore({
   reducer: {
+    toast:toastReducer,
     auth: authReducer,
     users: usersReducer,
     tickets: ticketsReducer,

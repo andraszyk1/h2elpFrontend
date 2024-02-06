@@ -1,92 +1,40 @@
-import React, { useState } from "react"
-import { Button, Col, Form, Toast, ToastContainer, Row } from "react-bootstrap";
-import { useAddAcceptTicketMutation,useUpdateTicketStatusMutation } from "../store/api/mainApi";
-import { useNavigate, useParams } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useState } from "react";
+import { Button, Col, Form, Row } from "react-bootstrap";
+import { useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
+import { useAddAcceptTicketMutation, useUpdateTicketStatusMutation } from "../store/api/mainApi";
+import { setShowToast } from "../store/slices/toastSlice";
 import AsyncSelectUsers from "./AsyncSelectUsers";
 
-
-
 export const TicketAddAccept = () => {
-    const account = useSelector(state => state.auth.loggedUser);
-    const { id } = useParams()
-    const [showToast, setShowToast] = useState(false);
-    const [messageToast, setMessageToast] = useState('');
-    const navigate = useNavigate()
-    const [userAcceptId, setUserAcceptId] = useState("")
-    const [selectedUser, setSelectedUser] = useState("")
-    const [ticketAcceptId] = useState(id)
-    const [addAccept] = useAddAcceptTicketMutation()
+    const { id: ticketAcceptId } = useParams();
+    const [userAcceptId, setUserAcceptId] = useState("");
+    const [addAccept] = useAddAcceptTicketMutation();
     const [updateTicketStatus] = useUpdateTicketStatusMutation();
-
-
-
+    const dispatch=useDispatch();
     const handleOnSubmit = async (e) => {
         e.preventDefault();
-      
-        console.log(userAcceptId, ticketAcceptId);
         try {
             const response = await addAccept({ status: "Do Akceptacji", userAcceptId, ticketAcceptId }).unwrap()
-            await updateTicketStatus({ id:ticketAcceptId, status:"Wstrzymane"}).unwrap()
-            console.log(response);
-            const { success, message } = response;
-            if (success) {
-                setSelectedUser("")
-                navigate(`/tickets/${id}`)
-            } else {
-                setShowToast(true)
-                setMessageToast(message)
-            }
-
+            await updateTicketStatus({ id: [ticketAcceptId], status: "Wstrzymane" }).unwrap()
+            const {message } = response;
+            dispatch(setShowToast({showToast:true,message:message,variant:'danger'}));
+        
         } catch (error) {
             console.log(error);
         }
     }
-    let content, toast
-
-   
-        let selectUser;
-    
-        selectUser = <AsyncSelectUsers onChange={(e) => setUserAcceptId(e.value)} />
-
-
-        toast = 
-        <ToastContainer position="top-center">
-        <Toast  onClose={() => setShowToast(false)} show={showToast} delay={4000} autohide>
-            <Toast.Header>
-                <img
-                    src="holder.js/20x20?text=%20"
-                    className="rounded me-2"
-                    alt=""
-                />
-                <strong className="me-auto">Komunikat</strong>
-            </Toast.Header>
-            <Toast.Body>{messageToast}</Toast.Body>
-        </Toast>
-        </ToastContainer>
-        content = <>
-          
-                <Form onSubmit={handleOnSubmit}>
-                   <Row>
-                        <Col sm={6} md={6} lg={6} xs={6} xl={6} xxl={6}  >
-                            {selectUser}
-                        </Col>
-                        <Col sm={6} md={6} lg={6} xs={6} xl={6} xxl={6}  >
-                            <Button  className="col-12"   variant="dark" type="submit">Dodaj Akceptację</Button>
-                            </Col>
-                        </Row>
-                </Form>
-       
-
-        </>
- 
-
 
     return (
-        <>
-            {showToast && toast}
-            {content}
-        </>
-
+        <Form onSubmit={handleOnSubmit}>
+        <Row>
+            <Col sm={6} md={6} lg={6} xs={6} xl={6} xxl={6}  >
+                <AsyncSelectUsers onChange={(e) => setUserAcceptId(e.value)} valueToInput={userAcceptId} />
+            </Col>
+            <Col sm={6} md={6} lg={6} xs={6} xl={6} xxl={6}  >
+                <Button className="col-12" size="sm" variant="dark" type="submit">Dodaj Akceptację</Button>
+            </Col>
+        </Row>
+    </Form>
     )
 }

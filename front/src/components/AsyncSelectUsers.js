@@ -14,8 +14,8 @@ export function mapDataFromSelectToOpiekun(data, config) {
   })
   return newmap;
 }
-const AsyncSelectUsers = ({ isMulti, onChange, inputName, defaultInputValue, defaultValue }) => {
-  const [inputValue, setInputValue] = useState('a');
+const AsyncSelectUsers = ({ isMulti,valueToInput, onChange, inputName, defaultInputValue, defaultValue }) => {
+  const [inputValue, setInputValue] = useState(valueToInput??'');
   const { data } = useGetUsersQuery({ search: inputValue, limit: 10 });
   // console.log(defaultInputValue)
 
@@ -29,9 +29,9 @@ const AsyncSelectUsers = ({ isMulti, onChange, inputName, defaultInputValue, def
   return (
     <AsyncSelect
       isMulti={isMulti}
-      defaultInputValue={defaultInputValue ||''}
+      defaultInputValue={valueToInput ||''}
       defaultValue={defaultValue}
-      onChange={e => onChange(e, inputName)}
+      onChange={onChange}
       loadOptions={(inputValue, callback) => loadOptions(inputValue, callback)}
       placeholder="Users"
     />
