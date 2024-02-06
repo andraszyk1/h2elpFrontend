@@ -57,7 +57,7 @@ function TicketAddByCategory() {
                 <TicketAddFormWrapper ><TicketAddFormNowyPracownik categoryId={categoryId} tworcaId={account.login} /></TicketAddFormWrapper>
             )
         }
-        if (category === "Problemy z siecią komputerową" || category === "Usterka komputera" || "Drukarki" ||
+        if (category === "Problemy z siecią komputerową" || category === "Usterka komputera" || category === "Drukarki" ||
             category === "Baza techniczna" || "Baza danych" || category === "Rozbudowa sprzętu" || category === "Instalacja nowego komputera" ||
             category === "Instalacja oprogramowania" || category === "Zmiana miejsca użytkowania" || category === "Przydział telefonu komórkowego" ||
             category === "Problemy z czytnikiem" || category === "Outlook" || category === "Nadanie uprawnień do druku/skanowania" ||
