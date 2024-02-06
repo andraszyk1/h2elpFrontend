@@ -24,13 +24,13 @@ useEffect(()=>{
 
   const handleFilters = (e, input) => {
     console.log(e,input)
-    // console.log({ ...filters, [name]: value });
-    // let value, name, target;
-    // target = e.target ? e.target: e;
-    // value = target?.value ;
-    // name = input ? input : target?.name
+    console.log({ ...filters, [name]: value });
+    let value, name, target;
+    target = e.target ? e.target: e;
+    value = target?.value ;
+    name = input ? input : target?.name
  
-    // dispatch(setFiltersToTickets({ ...filters, [name]: value }))
+    dispatch(setFiltersToTickets({ ...filters, [name]: value }))
   }
 
   return (
