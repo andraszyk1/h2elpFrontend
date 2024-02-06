@@ -58,7 +58,7 @@ function TicketAddByCategory() {
             )
         }
         if (category === "Problemy z siecią komputerową" || category === "Usterka komputera" || category === "Drukarki" ||
-            category === "Baza techniczna" || "Baza danych" || category === "Rozbudowa sprzętu" || category === "Instalacja nowego komputera" ||
+            category === "Baza techniczna" || category ==="Baza danych" || category === "Rozbudowa sprzętu" || category === "Instalacja nowego komputera" ||
             category === "Instalacja oprogramowania" || category === "Zmiana miejsca użytkowania" || category === "Przydział telefonu komórkowego" ||
             category === "Problemy z czytnikiem" || category === "Outlook" || category === "Nadanie uprawnień do druku/skanowania" ||
             category === "Internet" || category === "MS Office" || category === "Instalacja/przeniesienie telefonu stacjonarnego" ||
