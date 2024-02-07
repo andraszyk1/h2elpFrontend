@@ -23,7 +23,7 @@ const TicketsFilterForm = () => {
   
     const uniqueCategories = getUniqeValuesOfArray(CategoriesArray);
     const uniqueTworca = getUniqeValuesOfArray(tworcaArray);
-   
+   console.log(uniqueTworca);
 
    
   
