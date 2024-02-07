@@ -20,7 +20,7 @@ const TicketsFilterForm = () => {
     const tworcaArray= ticketsData?.map(ticket => (
         ticket?.tworca?.login
     ));
-  
+     console.log(tworcaArray);
     const uniqueCategories = getUniqeValuesOfArray(CategoriesArray);
     const uniqueTworca = getUniqeValuesOfArray(tworcaArray);
    console.log(uniqueTworca);
