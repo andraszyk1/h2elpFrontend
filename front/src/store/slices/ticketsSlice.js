@@ -22,25 +22,25 @@ export const ticketsSlice = createSlice({
 
     },
     reducers: {
-        setCheckedTickets(state, action) {
-            if (state.checkedTickets?.indexOf(action.payload) !== -1)
-                state.checkedTickets = state.checkedTickets.filter(item => item !== action.payload)
+        setCheckedTickets(state, { payload }) {
+            if (state.checkedTickets?.indexOf(payload) !== -1)
+                state.checkedTickets = state.checkedTickets.filter(item => item !== payload)
             else
-                state.checkedTickets = [...state.checkedTickets, action.payload]
+                state.checkedTickets = [...state.checkedTickets, payload]
         },
-        setAllCheckedTickets(state, action) {
-            state.checkedTickets = action.payload
+        setAllCheckedTickets(state, { payload }) {
+            state.checkedTickets = payload
         },
         removeCheckedTickets(state) {
             state.checkedTickets = []
         },
-        setTicketsToFilter(state, action) {
-            state.ticketsToFilter = action.payload
-            state.resultTickets = action.payload
+        setTicketsToFilter(state, { payload }) {
+            state.ticketsToFilter = payload
+            state.resultTickets = payload
         },
-        setSort(state, action) {
+        setSort(state, { payload }) {
             let tempResult = state.resultTickets
-            const { sortValue, sortType } = action.payload
+            const { sortValue, sortType } = payload
             state.sort = { sortValue, sortType }
             let sortedResult
 
@@ -68,17 +68,17 @@ export const ticketsSlice = createSlice({
 
             state.resultTickets = sortedResult
         },
-        setFiltersToTickets(state, action) {
-            state.filters = action.payload
-          
+        setFiltersToTickets(state, { payload }) {
+            state.filters = payload
+
         },
-        clearFilters(state, action) {
-            state.filters = {}
+        clearFilters(state, { payload }) {
+            state.filters = payload ?? {}
             state.resultTickets = state.ticketsToFilter
             state.search = ""
         },
-        setSearch(state, action) {
-            state.search = action.payload
+        setSearch(state, { payload }) {
+            state.search = payload
         }
 
     },
@@ -88,6 +88,6 @@ const selectCheckedTickets = state => state.tickets.checkedTickets
 const selectSerch = state => state.tickets.search
 const selectFilters = state => state.tickets.filters
 
-export {  selectSerch, selectCheckedTickets, selectFilters };
+export { selectSerch, selectCheckedTickets, selectFilters };
 export const { setSort, searchTickets, setFiltersToTickets, setTicketsToFilter, setAllCheckedTickets, setCheckedTickets, removeCheckedTickets, clearFilters, setSearch } = ticketsSlice.actions
 export default ticketsSlice.reducer

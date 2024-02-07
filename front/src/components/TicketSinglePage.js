@@ -94,7 +94,7 @@ export default function TicketSinglePage() {
     </Container>
 
   } else if (isSuccess) {
-    content = <Container className='m-2 fluid' >
+    content = <Container className='fluid' >
       <Row className='m-2 shadow '>
         <TicketPanelActions ticket={ticket} />
       </Row>

@@ -10,6 +10,7 @@ import { Row, Col, Spinner, Alert, Form } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { setCheckedTickets, setAllCheckedTickets, selectCheckedTickets, selectFilters, selectSerch } from '../store/slices/ticketsSlice'
 import { useGetTicketsQuery } from '../store/api/mainApi'
+import TicketsFilterForm from './Forms/TicketsFilterForm'
 
 export default function TicketsScreen() {
     const dispatch = useDispatch()
@@ -17,12 +18,13 @@ export default function TicketsScreen() {
     const filters = useSelector(selectFilters)
     const search = useSelector(selectSerch)
   
-
+    console.log(filters);
     const { data, isSuccess, isLoading } = useGetTicketsQuery(
         {
             search: search ?? "",
             status: filters.status ?? "",
             category: filters.category ?? "",
+            tworca:filters.tworca ?? "",
             limit: 10,
 
         })
@@ -68,7 +70,8 @@ export default function TicketsScreen() {
             </Row>
             <Row>
                 <Col className='fluid'>
-                    <TicketFilters />
+                    <TicketsFilterForm/>
+                    {/* <TicketFilters /> */}
                 </Col>
             </Row>
             <Row>

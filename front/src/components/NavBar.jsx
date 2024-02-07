@@ -6,10 +6,9 @@ import { PiSuitcaseSimpleBold, PiUserDuotone, PiUsersThreeFill } from 'react-ico
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import ToastCustom from "./ToastCustom";
-import { setShowToast } from "../store/slices/toastSlice";
 export default function NavBar() {
   const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
-  const account = useSelector(state => state.auth.loggedUser);
+  const {loggedUser} = useSelector(state => state.auth);
   const { showToast, message, variant } = useSelector((state) => state.toast);
   const dispatch = useDispatch();
   return (
@@ -30,8 +29,8 @@ export default function NavBar() {
                 </Nav>
 
                 <Nav>
-                  <NavDropdown title={account.login} id="navbarScrollingDropdown">
-                    <NavDropdown.Item><Link to={`/users/` + account.login}><PiUserDuotone />Profil</Link></NavDropdown.Item>
+                  <NavDropdown title={loggedUser.login} id="navbarScrollingDropdown">
+                    <NavDropdown.Item><Link to={`/users/` + loggedUser.login}><PiUserDuotone />Profil</Link></NavDropdown.Item>
                     <NavDropdown.Item> <Link to="/logout"><MdLogout /> Wyloguj</Link></NavDropdown.Item>
                   </NavDropdown>
                 </Nav>

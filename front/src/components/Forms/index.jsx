@@ -6,13 +6,13 @@ import { TicketAddForm } from "./TicketAddForm";
 import { TicketAddFormNowyPracownik } from "./TicketAddFormNowyPracownik";
 import { TicketAddFormWzorzec1 } from "./TicketAddFormWzorzec1";
 export { TicketAddForm, TicketAddFormNowyPracownik, TicketAddFormWzorzec1 };
-
-export const wplywOpcje=[{value:"Jednostka",label:"Jednostka"},{value:"Proces",label:"Proces"},{value:"Grupa użytkowników",label:"Grupa użytkowników"},{value:"Zakład",label:"Zakład"}]
-export const pilonscOpcje=[{value:"Niska",label:"Niska"},{value:"Srednia",label:"Średnia"},{value:"Wysoka",label:"Wysoka"},{value:"Krytyczna",label:"Krytyczna"}]
-export const kontoDomenoweWindowsOpcje=[{value:"tak",label:"Tak"},{value:"nie",label:"Nie"}]
-export const dostepDoStronWWWOpcje=[{value:"tak",label:"Tak"},{value:"nie",label:"Nie"}]
-export const kontoPocztoweOpcje=[{value:"grupowe",label:"Grupowe"},{value:"imienne",label:"Imienne"}]
-export const zrodloZgloszeniaOpcje=[{value:"chat",label:"Chat"},{value:"porta",label:"Portal"},{value:"telefon",label:"Telefon"},{value:"email",label:"Email"}]
+export const statusOpcje = [{ value: "W realizacji", label: "W realizacji" }, { value: "Nowe", label: "Nowe" }, { value: "Wznowione", label: "Wznowione" }, { value: "Do Akceptacji", label: "Do Akceptacji" }, { value: "Anulowane", label: "Anulowane" }, { value: "W firmie zewnętrznej", label: "W firmie zewnętrznej" }, { value: "W konsultacji", label: "W konsultacji" }, { value: "Wstrzymane", label: "Wstrzymane" }, { value: "Zamknięte", label: "Zamknięte" }];
+export const wplywOpcje = [{ value: "Jednostka", label: "Jednostka" }, { value: "Proces", label: "Proces" }, { value: "Grupa użytkowników", label: "Grupa użytkowników" }, { value: "Zakład", label: "Zakład" }]
+export const pilonscOpcje = [{ value: "Niska", label: "Niska" }, { value: "Srednia", label: "Średnia" }, { value: "Wysoka", label: "Wysoka" }, { value: "Krytyczna", label: "Krytyczna" }]
+export const kontoDomenoweWindowsOpcje = [{ value: "tak", label: "Tak" }, { value: "nie", label: "Nie" }]
+export const dostepDoStronWWWOpcje = [{ value: "tak", label: "Tak" }, { value: "nie", label: "Nie" }]
+export const kontoPocztoweOpcje = [{ value: "grupowe", label: "Grupowe" }, { value: "imienne", label: "Imienne" }]
+export const zrodloZgloszeniaOpcje = [{ value: "chat", label: "Chat" }, { value: "porta", label: "Portal" }, { value: "telefon", label: "Telefon" }, { value: "email", label: "Email" }]
 export const AsyncSelectUsers = ({ isMulti, inputName, defaultInputValue, defaultValue, fieldName, label, placeholder, ...props }) => {
   const [field, meta, { setValue }] = useField(fieldName);
   const { data } = useGetUsersQuery({ search: field.value, limit: 10 });
@@ -28,15 +28,17 @@ export const AsyncSelectUsers = ({ isMulti, inputName, defaultInputValue, defaul
 
   return (
     <>
-    <label htmlFor={props.id || props.name}>{label}{meta.touched && meta.error ? (<small style={{color:'rgba(217, 83, 79,0.8)'}}> - {meta.error}</small>):null}</label>
+      <label htmlFor={props.id || props.name}>{label}{meta.touched && meta.error ? (<small style={{ color: 'rgba(217, 83, 79,0.8)' }}> - {meta.error}</small>) : null}</label>
       <AsyncSelect
+        isClearable
         isMulti={isMulti}
         defaultInputValue={defaultInputValue || ''}
         onChange={e => setValue(e)}
         loadOptions={(e, callback) => loadOptions(e, callback)}
         placeholder={placeholder}
         onBlur={field.onBlur}
-        styles={meta.touched && meta.error ? colourStylesAlert:colourStyles}
+        styles={meta.touched && meta.error ? colourStylesAlert : colourStyles}
+        theme={themeSettings}
       />
       {/* {meta.touched && meta.error ? (
          <div className="alert alert-warning">{meta.error}</div>
@@ -45,97 +47,90 @@ export const AsyncSelectUsers = ({ isMulti, inputName, defaultInputValue, defaul
   );
 };
 export const MyTextInput = ({ label, ...props }) => {
-    const [field, meta] = useField(props);
-    return (
-        <div className="form-group">
-            <label htmlFor={props.id || props.name}>{label}{meta.touched && meta.error ? (<small style={{color:'rgba(217, 83, 79,0.8)'}}> - {meta.error}</small>):null}</label>
-            <input className="form-control" {...field} {...props}
-            style={ meta.touched && meta.error ? {backgroundColor:'rgba(217, 83, 79,0.2)'}:{ backgroundColor:'white'}}
-            />
-            {/* {meta.touched && meta.error ? (
+  const [field, meta] = useField(props);
+  return (
+    <>
+      <label htmlFor={props.id || props.name}>{label}{meta.touched && meta.error ? (<small style={{ color: 'rgba(217, 83, 79,0.8)' }}> - {meta.error}</small>) : null}</label>
+      <input className="form-control"  {...field} {...props}
+        style={meta.touched && meta.error ? { backgroundColor: 'rgba(217, 83, 79,0.2)',height:'2em',borderRadius:0  } : { backgroundColor: 'white',height:'2em',borderRadius:0 }}
+      />
+      {/* {meta.touched && meta.error ? (
                 <div className="alert alert-warning">{meta.error}</div>
             ) : null} */}
-        </div>
+    </>
 
-    );
+  );
 };
 
 export const MyCheckbox = ({ children, ...props }) => {
-    const [field, meta] = useField({ ...props, type: 'checkbox' });
-    return (
+  const [field, meta] = useField({ ...props, type: 'checkbox' });
+  return (
 
-        <div className='checkbox'>
-            <label >
-                <input type="checkbox" {...field} {...props} />
-                {children}{meta.touched && meta.error ? (<small style={{color:'rgba(217, 83, 79,0.8)'}}> - {meta.error}</small>):null}
-            </label>
-            {/* {meta.touched && meta.error ? (
+    <div className='checkbox'>
+      <label >
+        <input type="checkbox" {...field} {...props} />
+        {children}{meta.touched && meta.error ? (<small style={{ color: 'rgba(217, 83, 79,0.8)' }}> - {meta.error}</small>) : null}
+      </label>
+      {/* {meta.touched && meta.error ? (
               <div className="alert alert-warning">{meta.error}</div>
             ) : null} */}
-        </div>
-    );
+    </div>
+  );
 };
 
-const dot = (color = 'transparent') => ({
-  alignItems: 'center',
-  display: 'flex',
-
-
-  ':before': {
-    backgroundColor: color,
-    borderRadius: 10,
-    content: '" "',
-    display: 'block',
-    marginRight: 8,
-    height: 10,
-    width: 10,
+const themeSettings=(theme)=>({
+          ...theme,
+  borderRadius: 0,
+  colors: {
+    ...theme.colors,
+    primary25: '#FFB6C1',
+    primary75:'#FFB6C1',
+    primary50:'#FFB6C1',
+    primary: '#87CEEB',
   },
-});
+  spacing:{
+    ...theme.spacing,
+    baseUnit:2,
+    controlHeight:10,
+    menuGutter:4
+  }
+})
 const colourStylesAlert = {
   control: (styles) => (
-    { ...styles, backgroundColor:'rgba(217, 83, 79,0.2)' }
-    ),}
+    { ...styles, backgroundColor: '#FFE4C4' }
+  ),
+}
 const colourStyles = {
   control: (styles) => (
-    { ...styles, backgroundColor:'white' }
-    ),
-  option: (styles, { isDisabled, isFocused, isSelected }) => {
-    // const color = chroma(data.color);
-    return {
-      ...styles,
-      backgroundColor: isSelected
-      ? '#eee'
-      : isFocused
-      ? '#ddd'
-      : undefined,
-      color: isSelected
-      ? '#5cb85c'
-      :'#292b2c',
-    cursor: isDisabled ? 'not-allowed' : 'default',
-    };
-  },
-  input: (styles) => ({ ...styles, ...dot() }),
-  placeholder: (styles) => ({ ...styles, ...dot('#ccc') }),
+    { ...styles, backgroundColor: 'white' }
+  ),
 
 };
 
-export  function MySelect({ fieldName, label, placeholder,options, ...props }) {
-    const [field, meta, { setValue }] = useField(fieldName);
-    return (<>
-        <label htmlFor={props.id || props.name}>{label}{meta.touched && meta.error ? (<small style={{color:'rgba(217, 83, 79,0.8)'}}> - {meta.error}</small>):null}</label>
-       
-        <Select
-          styles={meta.touched && meta.error ? colourStylesAlert:colourStyles}
-            defaultValue={options.find((option) => option.value === field.value)}
-            placeholder={placeholder}
-            onChange={e=>setValue(e)}
-            options={options}
-            onBlur={field.onBlur}
-            
-        />
-     
-        {/* {meta.touched && meta.error ? (
+export function MySelect({ fieldName, label, placeholder, setFilter, options, ...props }) {
+  const [field, meta, { setValue }] = useField(fieldName);
+
+  const handleOnChange = (e) => {
+    setValue(e)
+    setFilter && setFilter({filterValue:e?.value,filterName:props?.name})
+  }
+  return (<>
+    <label htmlFor={props.id || props.name}>{label}{meta.touched && meta.error ? (<small style={{ color: 'rgba(217, 83, 79,0.8)' }}> - {meta.error}</small>) : null}</label>
+
+    <Select
+      styles={meta.touched && meta.error ? colourStylesAlert : colourStyles}
+      defaultValue={options.find((option) => option.value === field.value)}
+      placeholder={placeholder}
+      onChange={handleOnChange}
+      options={options}
+      onBlur={field.onBlur}
+      isClearable
+      theme={themeSettings}
+
+    />
+
+    {/* {meta.touched && meta.error ? (
              <div className="alert alert-warning">{meta.error}</div>
         ) : null} */}
-    </>);
+  </>);
 }

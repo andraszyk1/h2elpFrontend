@@ -1,4 +1,4 @@
-import { Toast } from "react-bootstrap";
+import { Toast, ToastContainer } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { setShowToast } from "../store/slices/toastSlice";
 
@@ -8,13 +8,14 @@ const ToastCustom = ({ showToast, variant, message }) => {
     dispatch(setShowToast({ showToast: false }))
   }
   return (
-    < Toast style={{ zIndex: 1,position:'absolute',right:'50px' }} onClose={handleCloseToast} show={showToast} delay={3000} autohide bg={variant ?? ''}>
-      <Toast.Header>
-    
-        <strong className="me-auto">{message}</strong>
-      </Toast.Header>
+    <ToastContainer className="p-3" position='top-end' style={{ zIndex: 1 }}>
+      < Toast className="mw-80 w-80" onClose={handleCloseToast} show={showToast} animation={true}  delay={3000} autohide bg={variant ?? ''}>
+        <Toast.Header>
+          <strong className="me-auto">{message}</strong>
+        </Toast.Header>
+      </Toast >
+    </ToastContainer>
 
-    </Toast >
   )
 }
 

@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react";
+import { Alert, Card, Spinner } from "react-bootstrap";
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { statusConfig } from "./EnumsCustom";
-import { Alert, Card, Spinner } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
-import { useGetTicketQuery, useUpdateTicketMutation } from '../store/api/mainApi';
 import { useGetCategoriesQuery } from '../store/api/categoriesApi';
-import { RSelect1, mapDataForSelects, mapDataFromSelectToOpiekun } from "./RSelect1";
+import { useGetTicketQuery, useUpdateTicketMutation } from '../store/api/mainApi';
 import AsyncSelectUsers from "./AsyncSelectUsers";
+import { statusOpcje } from "./Forms";
+import { RSelect1, mapDataForSelects } from "./RSelect1";
 export function TicketEditForm() {
     const { id: ticketId } = useParams();
     const navigate = useNavigate()
@@ -94,7 +94,7 @@ export function TicketEditForm() {
                         </Form.Group>
                         <Form.Group>
                             <Form.Label>status</Form.Label>
-                            <RSelect1 onChange={handleInputChange} options={mapDataForSelects(statusConfig, { value: item => item, name: item => item })} defaultInputValue={defaultStatus} inputName="status" />
+                            <RSelect1 onChange={handleInputChange} options={statusOpcje} defaultInputValue={defaultStatus} inputName="status" />
                         </Form.Group>
                         <Form.Group>
                             <Form.Label>tresc</Form.Label>

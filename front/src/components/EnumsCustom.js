@@ -1,1 +1,0 @@
-export const  statusConfig = ["W realizacji","Nowe", "Wznowione", "Do Akceptacji", "Anulowane", "W firmie zewnętrznej", "W konsultacji", "Wstrzymane","Zamknięte"];

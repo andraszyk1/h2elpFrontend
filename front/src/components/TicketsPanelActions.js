@@ -67,14 +67,14 @@ function TicketsPanelActions({ ticket }) {
       <Container style={{ display: 'flex', justifyContent: 'space-evenly' }}>
         <Button className="m-1" size='md' title='Dodaj zgłoszenie' variant='light' onClick={handleInsertTicket}> <IoAddOutline/> Dodaj Zgłoszenie </Button>
 
-        <Button className="m-1" size='md' title="Zamknij" variant='light' disabled={activeBtn} onClick={handleUpdateStatusToClose}>
+        <Button className="m-1" size='md' title="Zamknij" variant='light' disabled={activeBtn} style={ activeBtn ? {fontWeight:'500'} :{fontWeight:'600'}} onClick={handleUpdateStatusToClose}>
           {isLoadingUpdateStatus ? <Spinner size='sm' /> : <MdStop />} Zamknij zgłoszenia
         </Button>
 
-        <Button className="m-1" size="md" title="Przypisz Do mnie" variant="light" disabled={activeBtn} onClick={handleSubscribeTicketToMe}>
+        <Button className="m-1" size="md" title="Przypisz Do mnie" variant="light" disabled={activeBtn} style={ activeBtn ? {fontWeight:'500'} :{fontWeight:'600'}} onClick={handleSubscribeTicketToMe}>
           {isLoadingUpdate ? <Spinner size='sm' /> : <AiOutlineUserAdd />} Przypisz do mnie
         </Button>
-        <Button className="m-1" size="md" title="Usuń" variant="light" disabled={activeBtn} onClick={handleDeleteCheckedTicket}> 
+        <Button className="m-1" size="md" title="Usuń" variant="light" disabled={activeBtn} style={ activeBtn ? {fontWeight:'500'} :{fontWeight:'600'}} onClick={handleDeleteCheckedTicket}> 
         {isLoadingDelete ? <Spinner size='lg' /> : <AiFillDelete />} Usuń zaznaczone
           </Button>
         <TicketSearch />

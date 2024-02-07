@@ -4,7 +4,7 @@ import { AiOutlineClose } from 'react-icons/ai';
 import { useDispatch, useSelector } from "react-redux";
 import { useGetCategoriesQuery } from "../store/api/categoriesApi";
 import { clearFilters, selectFilters, setFiltersToTickets, setSearch } from "../store/slices/ticketsSlice";
-import { statusConfig } from "./EnumsCustom";
+import { statusOpcje } from "./Forms";
 import RSelect1 from "./RSelect1";
 export function TicketFilters() {
   const dispatch = useDispatch();
@@ -41,7 +41,7 @@ useEffect(()=>{
           <Row >
             <Col className="mb-1" sm={12} md={12} lg={6} xs={12} xl={6} xxl={6} >
         
-                <RSelect1 placeholder="Wybierz status" onChange={handleFilters} options={statusConfig?.map((item)=>({value:item,label:item}))} inputName="status" defaultInputValue={filters?.status} defaultValue={filters?.status} />
+                <RSelect1 placeholder="Wybierz status" onChange={handleFilters} options={statusOpcje?.map((item)=>({value:item,label:item}))} inputName="status" defaultInputValue={filters?.status} defaultValue={filters?.status} />
              
             </Col>
             <Col className="mb-1" sm={12} md={12} lg={6} xs={12} xl={6} xxl={6} >

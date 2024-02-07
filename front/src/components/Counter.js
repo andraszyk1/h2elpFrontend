@@ -7,7 +7,7 @@ const count = useSelector(state=>state.counter.value);
 const dispatch=useDispatch();
     
     return(
-        <Row>
+        <Row style={{}}>
             <Col>
             <Button onClick={()=>dispatch(increment())}>Add +1</Button>
             <Button onClick={()=>dispatch(decrement())}>Add -1</Button>
