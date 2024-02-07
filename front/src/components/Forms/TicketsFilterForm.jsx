@@ -14,7 +14,7 @@ const TicketsFilterForm = () => {
         return outputArray
     }
 
-   useEffect()->{
+   useEffect(()=>{
        if(isSuccessTickets){
               console.log(ticketsData);
        }
