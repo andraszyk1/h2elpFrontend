@@ -28,7 +28,7 @@ export default function TicketsScreen() {
             limit: 10,
 
         })
-console.log(data):
+console.log(data)
 
     const handleClickCheckTicket = (id) => {
         dispatch(setCheckedTickets(id))
