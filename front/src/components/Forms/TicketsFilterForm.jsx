@@ -8,7 +8,7 @@ import { setFiltersToTickets } from "../../store/slices/ticketsSlice";
 import { setShowToast } from "../../store/slices/toastSlice";
 import { useGetTicketsQuery } from "../../store/api/mainApi";
 const TicketsFilterForm = () => {
-    const { data: ticketsData, isSuccess: isSuccessTickets } = useGetTicketsQuery({ search: "", status: "", category: "", limit: 10 });
+    const { data: ticketsData, isSuccess: isSuccessTickets } = useGetTicketsQuery({ search: "", status: "", category: "",tworca:"", limit: 10 });
     function getUniqeValuesOfArray(arr) {
         let outputArray = Array.from(new Set(arr))
         return outputArray
