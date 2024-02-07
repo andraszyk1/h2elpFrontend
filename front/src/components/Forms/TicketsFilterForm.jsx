@@ -1,5 +1,5 @@
 import { Form, Formik } from "formik";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { Col, Row } from "react-bootstrap";
 import { useDispatch } from 'react-redux';
 import * as Yup from "yup";
@@ -13,6 +13,12 @@ const TicketsFilterForm = () => {
         let outputArray = Array.from(new Set(arr))
         return outputArray
     }
+
+   useEffect()->{
+       if(isSuccessTickets){
+              console.log(ticketsData);
+       }
+   },[])
     const CategoriesArray = ticketsData?.map(ticket => (
         ticket?.Category?.name
     ));
@@ -20,10 +26,10 @@ const TicketsFilterForm = () => {
     const tworcaArray= ticketsData?.map(ticket => (
         ticket?.tworca?.login
     ));
-     console.log(tworcaArray);
+    
     const uniqueCategories = getUniqeValuesOfArray(CategoriesArray);
     const uniqueTworca = getUniqeValuesOfArray(tworcaArray);
-   console.log(uniqueTworca);
+
 
    
   
