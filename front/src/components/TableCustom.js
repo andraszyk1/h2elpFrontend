@@ -30,7 +30,7 @@ function TableCustom({ data, columns }) {
   }
   return (
     <>
-      <Table striped="rows" size="md" responsive={true}>
+      <Table  striped="rows" size="md" responsive={true}>
         <thead>
           <tr>
             {columns.map((col, i) => {

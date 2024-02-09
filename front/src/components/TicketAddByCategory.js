@@ -46,7 +46,7 @@ function TicketAddByCategory() {
         )
     }
     const renderByCategory = (content) => {
-        console.log("a")
+      
         if (category === "Zasoby sieciowe") {
             return (
                 <TicketAddFormWrapper ><TicketAddForm /></TicketAddFormWrapper>

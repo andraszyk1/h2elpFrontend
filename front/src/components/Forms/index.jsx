@@ -115,7 +115,7 @@ export function MySelect({ fieldName, label, placeholder, setFilter, options, ..
     setFilter && setFilter({filterValue:e?.value,filterName:props?.name})
   }
   return (<>
-    <label htmlFor={props.id || props.name}>{label}{meta.touched && meta.error ? (<small style={{ color: 'rgba(217, 83, 79,0.8)' }}> - {meta.error}</small>) : null}</label>
+   {label && <label htmlFor={props.id || props.name}>{label}{meta.touched && meta.error ? (<small style={{ color: 'rgba(217, 83, 79,0.8)' }}> - {meta.error}</small>) : null}</label>}
 
     <Select
       styles={meta.touched && meta.error ? colourStylesAlert : colourStyles}

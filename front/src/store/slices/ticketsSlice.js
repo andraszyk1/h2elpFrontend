@@ -1,14 +1,4 @@
-import { createSlice, current } from "@reduxjs/toolkit";
-const getResultAfterFilter = ({ category, status }, tempResult) => {
-    if (category) {
-        tempResult = tempResult.filter(ticket => ticket.Category.name.toLowerCase().includes(category.toLowerCase()))
-    }
-    if (status) {
-        tempResult = tempResult.filter(ticket => ticket.status.toLowerCase().includes(status.toLowerCase()))
-    }
-    return tempResult
-}
-
+import { createSlice } from "@reduxjs/toolkit";
 
 export const ticketsSlice = createSlice({
     name: "tickets",
@@ -19,6 +9,7 @@ export const ticketsSlice = createSlice({
         search: "",
         sort: {},
         checkedTickets: [],
+        disableInputCheck:false
 
     },
     reducers: {
@@ -30,6 +21,9 @@ export const ticketsSlice = createSlice({
         },
         setAllCheckedTickets(state, { payload }) {
             state.checkedTickets = payload
+        },
+        setButtonAllTicketsChecked(state,{payload}){
+            state.disableInputCheck=payload
         },
         removeCheckedTickets(state) {
             state.checkedTickets = []
@@ -72,8 +66,8 @@ export const ticketsSlice = createSlice({
             state.filters = payload
 
         },
-        clearFilters(state, { payload }) {
-            state.filters = payload ?? {}
+        clearFilters(state) {
+            state.filters = {}
             state.resultTickets = state.ticketsToFilter
             state.search = ""
         },
@@ -87,7 +81,8 @@ export const ticketsSlice = createSlice({
 const selectCheckedTickets = state => state.tickets.checkedTickets
 const selectSerch = state => state.tickets.search
 const selectFilters = state => state.tickets.filters
+const selectDisableInputCheck = state => state.tickets.disableInputCheck
 
-export { selectSerch, selectCheckedTickets, selectFilters };
-export const { setSort, searchTickets, setFiltersToTickets, setTicketsToFilter, setAllCheckedTickets, setCheckedTickets, removeCheckedTickets, clearFilters, setSearch } = ticketsSlice.actions
+export { selectDisableInputCheck,selectCheckedTickets, selectFilters, selectSerch };
+export const { setButtonAllTicketsChecked,setSort, searchTickets, setFiltersToTickets, setTicketsToFilter, setAllCheckedTickets, setCheckedTickets, removeCheckedTickets, clearFilters, setSearch } = ticketsSlice.actions
 export default ticketsSlice.reducer

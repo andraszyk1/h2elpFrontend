@@ -6,14 +6,14 @@ import { MdStop } from "react-icons/md";
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useDeleteTicketMutation, useUpdateTicketMutation, useUpdateTicketStatusMutation } from "../store/api/mainApi";
-import { selectCheckedTickets, setAllCheckedTickets } from '../store/slices/ticketsSlice';
-import { TicketSearch } from './TicketSearch';
+import { selectCheckedTickets, setAllCheckedTickets,setButtonAllTicketsChecked } from '../store/slices/ticketsSlice';
 import { setShowToast } from '../store/slices/toastSlice';
 function TicketsPanelActions({ ticket }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const account = useSelector(state => state.auth.loggedUser);
   const checkedTickets = useSelector(selectCheckedTickets);
+
   const [deleteTicket,{ isLoading: isLoadingDelete }] = useDeleteTicketMutation();
   const [updateTicket, { isLoading: isLoadingUpdate }] = useUpdateTicketMutation();
   const [updateTicketStatus, { isLoading: isLoadingUpdateStatus }] = useUpdateTicketStatusMutation();
@@ -30,6 +30,7 @@ function TicketsPanelActions({ ticket }) {
     })
     dispatch(setShowToast({showToast: true, message: `Zgłoszenia nr ${Array.from(checkedTickets).join(",")} zostały usunięte `, variant: 'danger'} ))
     dispatch(setAllCheckedTickets([]))
+    dispatch(setButtonAllTicketsChecked(false))
     } catch (error) {
       console.error(error);
     }
@@ -48,6 +49,7 @@ function TicketsPanelActions({ ticket }) {
       })
       dispatch(setShowToast({showToast: true, message: `Zgłoszenia nr ${Array.from(checkedTickets).join(",")} zostały przypisane do ${account.login}`, variant: 'info'} ))
       dispatch(setAllCheckedTickets([]))
+      dispatch(setButtonAllTicketsChecked(false))
     } catch (error) {
       console.log(error);
     }
@@ -58,6 +60,7 @@ function TicketsPanelActions({ ticket }) {
       await updateTicketStatus({ id: checkedTickets, status: "Zamknięte" })
       dispatch(setShowToast({showToast: true, message: `Zgłoszenia nr ${Array.from(checkedTickets).join(",")} zostały zamknięte`, variant: 'warning'} ))
       dispatch(setAllCheckedTickets([]))
+      dispatch(setButtonAllTicketsChecked(false))
     } catch (error) {
       console.log(error);
     }
@@ -77,7 +80,7 @@ function TicketsPanelActions({ ticket }) {
         <Button className="m-1" size="md" title="Usuń" variant="light" disabled={activeBtn} style={ activeBtn ? {fontWeight:'500'} :{fontWeight:'600'}} onClick={handleDeleteCheckedTicket}> 
         {isLoadingDelete ? <Spinner size='lg' /> : <AiFillDelete />} Usuń zaznaczone
           </Button>
-        <TicketSearch />
+      
       </Container>
     </Navbar>
   )

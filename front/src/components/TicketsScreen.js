@@ -1,30 +1,32 @@
 
-import { TimeAgo } from './TimeAgo'
-import { TicketFilters } from './TicketFilters'
+import { Alert, Col, Container, Form, Row, Spinner } from 'react-bootstrap'
+import { useDispatch, useSelector } from 'react-redux'
+import { useGetTicketsQuery } from '../store/api/mainApi'
+import { selectCheckedTickets, selectDisableInputCheck, selectFilters, selectSerch, setAllCheckedTickets, setButtonAllTicketsChecked, setCheckedTickets } from '../store/slices/ticketsSlice'
+import TicketsFilterForm from './Forms/TicketsFilterForm'
+import TableCustom from './TableCustom'
 import TicketDeleteBtn from './TicketDeleteBtn'
 import TicketEditBtn from './TicketEditBtn'
+import { TicketSearch } from './TicketSearch'
 import TicketShowBtn from './TicketShowBtn'
-import TableCustom from './TableCustom'
 import TicketsPanelActions from './TicketsPanelActions'
-import { Row, Col, Spinner, Alert, Form } from 'react-bootstrap'
-import { useDispatch, useSelector } from 'react-redux'
-import { setCheckedTickets, setAllCheckedTickets, selectCheckedTickets, selectFilters, selectSerch } from '../store/slices/ticketsSlice'
-import { useGetTicketsQuery } from '../store/api/mainApi'
-import TicketsFilterForm from './Forms/TicketsFilterForm'
+import { TimeAgo } from './TimeAgo'
 
 export default function TicketsScreen() {
     const dispatch = useDispatch()
     const checkedTickets = useSelector(selectCheckedTickets)
+    const disableCheckedAll = useSelector(selectDisableInputCheck)
     const filters = useSelector(selectFilters)
     const search = useSelector(selectSerch)
-  
-    console.log(filters);
+
+
     const { data, isSuccess, isLoading } = useGetTicketsQuery(
         {
             search: search ?? "",
             status: filters.status ?? "",
             category: filters.category ?? "",
-            tworca:filters.tworca ?? "",
+            tworca: filters.tworca ?? "",
+            temat: filters.temat ?? "",
             limit: 10,
 
         })
@@ -34,16 +36,18 @@ export default function TicketsScreen() {
         dispatch(setCheckedTickets(id))
     }
     const handleClickCheckTicketAll = (e) => {
-        if(data?.length===0) return;
-        if (e?.target?.checked)
+        if (e.target.checked === true) {
+            dispatch(setButtonAllTicketsChecked(true));
             dispatch(setAllCheckedTickets(data?.map(ticket => ticket.id)))
+        }
         else {
+            dispatch(setButtonAllTicketsChecked(false));
             dispatch(setAllCheckedTickets([]))
         }
     }
 
     const columns = [
-        { colName: <Form name='formCheckAll'><Form.Check id='checkAll' name='checkAll' onChange={(e) => handleClickCheckTicketAll(e)} disabled={data?.length===0?true:false} /></Form>, colValue: item => <><Form.Check id={"check-" + item.id} name={"check-" + item.id} value={item.id} checked={checkedTickets.indexOf(item.id) !== -1 ? true : false} onChange={() => handleClickCheckTicket(item.id)} /></> },
+        { colName: <Form name='formCheckAll'><Form.Check id='checkAll' name='checkAll' onChange={handleClickCheckTicketAll} disabled={Array(checkedTickets).length === 0} checked={disableCheckedAll} /></Form>, colValue: item => <><Form.Check value={item.id} checked={checkedTickets.indexOf(item.id) !== -1 ? true : false} onChange={() => handleClickCheckTicket(item.id)} /></> },
         { colName: "Kategoria", colValue: item => item?.Category?.name, sort: true, valueToSort: item => item?.Category?.name },
         { colName: "Status", colValue: item => item?.status, sort: true, valueToSort: item => item?.status },
         { colName: "Twórca", colValue: item => item?.tworca?.name + " " + item?.tworca?.surname, sort: true, valueToSort: item => item?.tworca?.name },
@@ -68,10 +72,20 @@ export default function TicketsScreen() {
                     <TicketsPanelActions />
                 </Col>
             </Row>
-            <Row>
+            <Row >
+
                 <Col className='fluid'>
-                    <TicketsFilterForm/>
-                    {/* <TicketFilters /> */}
+                    <Container className='border p-4'>
+                        <Row>
+                            <Col className='col-9'>
+
+                                <TicketsFilterForm />
+                            </Col>
+                            <Col className='col-3'>
+                                <TicketSearch />
+                            </Col >
+                        </Row>
+                    </Container>
                 </Col>
             </Row>
             <Row>
@@ -79,7 +93,7 @@ export default function TicketsScreen() {
                     {content}
                 </Col>
             </Row>
-    
+
         </>
     )
 }

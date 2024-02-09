@@ -1,4 +1,4 @@
-import { Alert, Badge, Button, Card, Col, Container, ListGroup, Placeholder, Row, Table } from 'react-bootstrap';
+import { Alert, Badge, Button, Card, Col, Container, ListGroup, Placeholder, Row, Tab, Table, Tabs } from 'react-bootstrap';
 import { AiFillDelete } from 'react-icons/ai';
 import { useParams } from 'react-router-dom';
 import { useDeleteAcceptTicketMutation, useGetTicketQuery, useUpdateAcceptTicketMutation } from '../store/api/mainApi';
@@ -106,6 +106,8 @@ export default function TicketSinglePage() {
                 <ListGroup.Item><b>Temat</b> : {ticket?.temat}</ListGroup.Item>
                 <ListGroup.Item><b>Kategoria</b> : {ticket?.Category?.name}</ListGroup.Item>
                 <ListGroup.Item><b>Status</b> : {ticket?.status}</ListGroup.Item>
+                <ListGroup.Item><b>Utworzone :</b> <TimeAgo timestamp={ticket?.createdAt} /></ListGroup.Item>
+                <ListGroup.Item><b>Zmodyfikowane</b> : <TimeAgo timestamp={ticket?.updatedAt} /></ListGroup.Item>
               </ListGroup>
             </Card>
           </Row>
@@ -113,10 +115,42 @@ export default function TicketSinglePage() {
           <Row className='my-1'>
             <Card className='shadow'>
               <ListGroup variant="flush">
-                <ListGroup.Item><b>Utworzone :</b> <TimeAgo timestamp={ticket?.createdAt} /></ListGroup.Item>
-                <ListGroup.Item><b>Zmodyfikowane</b> : <TimeAgo timestamp={ticket?.updatedAt} /></ListGroup.Item>
-                <ListGroup.Item><b>Utworzone przez</b> {ticket?.tworca?.name + " " + ticket?.tworca?.surname} </ListGroup.Item>
-                <ListGroup.Item><b>Zgłoszone przez :</b> {ticket?.zglaszajacy?.name + " " + ticket?.zglaszajacy?.surname} </ListGroup.Item>
+               
+
+                <Tabs
+                  defaultActiveKey="autor"
+                  id="justify-tab-example"
+                  className="mb-3"
+                  justify
+                  transition
+                >
+                  <Tab eventKey="autor" title="Autor">
+                    <ListGroup variant="flush">
+                      <ListGroup.Item><b>Imię nazwisko :</b>   {ticket?.tworca?.name + " " + ticket?.tworca?.surname} </ListGroup.Item>
+                      <ListGroup.Item><b>Zakład :</b>   {ticket?.tworca?.zaklad}</ListGroup.Item>
+                      {ticket?.tworca?.email ? <ListGroup.Item><b>Email</b> {ticket?.tworca?.email} </ListGroup.Item> : null}
+                      {ticket?.tworca?.telefon ? <ListGroup.Item><b>Telefon</b> {ticket?.tworca?.telefon} </ListGroup.Item> : null}
+                      {ticket?.tworca?.dzial ? <ListGroup.Item><b>Dział</b> {ticket?.tworca?.dzial} </ListGroup.Item> : null}
+                      {ticket?.tworca?.ulica ? <ListGroup.Item><b>Adres</b> {ticket?.tworca?.kraj +" "+ ticket?.tworca?.wojewodztwo + " " + ticket?.tworca?.ulica + " " + ticket?.tworca?.kodpocztowy} </ListGroup.Item> : null}
+                    </ListGroup>
+
+                  </Tab>
+                  <Tab eventKey="zglaszajacy" title="Zgłaszający">
+                  <ListGroup variant="flush">
+                      <ListGroup.Item><b>Imię nazwisko :</b>   {ticket?.zglaszajacy?.name + " " + ticket?.zglaszajacy?.surname} </ListGroup.Item>
+                      <ListGroup.Item><b>Zakład :</b>   {ticket?.zglaszajacy?.zaklad}</ListGroup.Item>
+                      {ticket?.zglaszajacy?.email ? <ListGroup.Item><b>Email</b> {ticket?.zglaszajacy?.email} </ListGroup.Item> : null}
+                      {ticket?.zglaszajacy?.telefon ? <ListGroup.Item><b>Telefon</b> {ticket?.zglaszajacy?.telefon} </ListGroup.Item> : null}
+                      {ticket?.zglaszajacy?.dzial ? <ListGroup.Item><b>Dział</b> {ticket?.zglaszajacy?.dzial} </ListGroup.Item> : null}
+                      {ticket?.zglaszajacy?.ulica ? <ListGroup.Item><b>Adres</b> {ticket?.zglaszajacy?.kraj +" "+ ticket?.zglaszajacy?.wojewodztwo + " " + ticket?.zglaszajacy?.ulica + " " + ticket?.zglaszajacy?.kodpocztowy} </ListGroup.Item> : null}
+                    </ListGroup>
+                  </Tab>
+                </Tabs>
+
+
+
+
+
               </ListGroup>
             </Card>
           </Row>

@@ -1,4 +1,4 @@
-import { createSlice, current, } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 // const initialUser=localStorage.getItem('usersAD')?JSON.parse(localStorage.getItem('users')):[]
 
 export const usersSlice = createSlice({
@@ -7,25 +7,19 @@ export const usersSlice = createSlice({
         usersToFilter: [],
         resultUsers: [],
         search: "",
-        searchtest:""
+        searchtest: ""
     },
     reducers: {
-
-         setSearch(state, action) {
-            state.search = action.payload.toLowerCase()
+        setSearch(state, { payload }) {
+            state.search = payload.toLowerCase()
         },
-        setSearchTest(state, action) {
-            state.searchtest = action.payload.toLowerCase()
-        },
-
+     
     },
 
 
 })
-const selectSearch = state => state.users.search
-const selectTestSearch = state => state.users.searchtest
-export { selectSearch,selectTestSearch }
-export const {setSearch,setSearchTest } = usersSlice.actions
-export default usersSlice.reducer
 
+export const { setSearch } = usersSlice.actions
+export default usersSlice.reducer
+export const selectSearch = state => state.users.search
 
