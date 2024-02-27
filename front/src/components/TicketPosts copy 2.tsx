@@ -57,7 +57,7 @@ const TicketPosts = ({ id }: Ticket) => {
           <Row>
             <Col sm={6} md={6} lg={6} xs={6} xl={6} xxl={6}>
               <TicketPostAddBtn ticketId={ticketId} />
-              <b>Komentarze:</b> {`${page} / ${posts?.totalPages}`}
+              <b>Komentarze</b> {`${page} / ${posts?.totalPages}`}
             </Col>
 
             <Col sm={6} md={6} lg={6} xs={6} xl={6} xxl={6} style={{ textAlign: "right" }}>

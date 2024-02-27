@@ -10,7 +10,7 @@ export function TicketSearch() {
     dispatch(setSearch(e.target.value))
   }
   return (
-    <Form className="d-flex" >
+
       <Form.Control
         type="search"
         placeholder="Szukaj"
@@ -19,5 +19,5 @@ export function TicketSearch() {
         value={searchSelector}
         onChange={(e)=>handleTicketSearch(e)}
       />
-    </Form>)
+  )
 }

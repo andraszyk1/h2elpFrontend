@@ -1,5 +1,4 @@
-import React from "react";
-import { Button ,Col, Row, Badge } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 export function User({ user }) {
     const navigate=useNavigate()

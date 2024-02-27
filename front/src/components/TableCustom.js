@@ -1,70 +1,53 @@
-import { useMemo, useState } from "react";
-import { Table } from "react-bootstrap";
-import { FaArrowAltCircleUp, FaRegArrowAltCircleDown } from "react-icons/fa";
-import { useDispatch } from "react-redux";
-import { setSort } from "../store/slices/ticketsSlice";
-function TableCustom({ data, columns }) {
-  const dispatch = useDispatch()
-  const [order, setOrder] = useState('asc')
-  const [sortedValue, setSortedValue] = useState('')
-  const [dataTotal, setDataTotal] = useState(Array.from(data).length)
-  const [currentPage, setCurrentPage] = useState(1)
-  const [dataPerPage, setDataPerPage] = useState(10)
-  const [countPages, setCountPages] = useState(Math.ceil(dataTotal / dataPerPage))
-  const [ticketsLimit, setTicketsLimit] = useState(5)
-  useMemo(() => {
-    // console.log(dataTotal);
-    setCurrentPage(1)
-    setDataPerPage(10)
-    setCountPages(Math.ceil(dataTotal / dataPerPage))
-  }, [dataTotal, dataPerPage])
-  const handleThAscSortClick = (colName, colValue) => {
-    setOrder('asc')
-    setSortedValue(colName)
-    dispatch(setSort({ sortValue: colValue, sortType: 'asc' }))
-  }
-  const handleThDescSortClick = (colName, colValue) => {
-    setOrder('desc')
-    setSortedValue(colName)
-    dispatch(setSort({ sortValue: colValue, sortType: 'desc' }))
-  }
+import { Skeleton, Table, TableContainer, Tbody, Th, Thead, Tr } from "@chakra-ui/react";
+import { Form, Formik } from "formik";
+import * as Yup from "yup";
+import { CustomAsyncSelect } from "./Forms";
+function TableCustom({ data, columns, isLoading }) {
+
   return (
-    <>
-      <Table  striped="rows" size="md" responsive={true}>
-        <thead>
-          <tr>
-            {columns.map((col, i) => {
-              return <th key={i}>
-                {col?.colName}{" "}
-                {col?.sort ?
+    <Skeleton isLoaded={!isLoading} fadeDuration={4}>
+      <TableContainer>
+        <Table variant='striped' colorScheme="blackAlpha" size='sm'>
+          <Thead>
+            <Tr>
+              {columns.map((col, i) => {
+                return <Th key={i} maxW={col?.filter?.active === true ? '150px' : 'auto'} minW={col?.filter?.active === true ? '150px' : 'auto'}>
                   <>
-                    {order === 'desc' && sortedValue === col?.colName ?
-                      <FaArrowAltCircleUp style={{ cursor: 'pointer' }} onClick={() => handleThAscSortClick(col?.colName, col?.valueToSort)}>Asc</FaArrowAltCircleUp>
-                      : order === 'asc' && sortedValue === col?.colName ?
-                        <FaRegArrowAltCircleDown style={{ cursor: 'pointer' }} onClick={() => handleThDescSortClick(col?.colName, col?.valueToSort)}>Desc</FaRegArrowAltCircleDown >
-                        :
-                        <FaArrowAltCircleUp style={{ cursor: 'pointer' }} onClick={() => handleThAscSortClick(col?.colName, col?.valueToSort)}>Asc</FaArrowAltCircleUp>
+                    {col?.colCheckBox ? (col?.colCheckBox) : '' }
+                  
+                    {col?.filter?.active === true ?
+
+                      <Formik
+                        initialValues={{ [col?.filter?.name]: col?.filter?.initialValue }}
+                        validationSchema={Yup.object({ [col?.filter?.name]: Yup.mixed().notRequired() })}
+                      ><Form>
+                          <CustomAsyncSelect defaultValue={col?.filter?.initialValue ? { value: col?.filter?.initialValue, label: col?.filter?.initialValue } : ''} options={col?.filter?.options} name={col?.filter?.name} fieldName={col?.filter?.name} placeholder={col?.colName} />
+                        </Form>
+                      </Formik>
+
+                      :
+                      ''
                     }
                   </>
-                  : ""}
+                </Th>
+              })}
+            </Tr>
+          </Thead>
 
-              </th>
-            })}
-          </tr>
-        </thead>
-        <tbody>
-          {
-            data.map((row, i) => {
-              return (<tr key={row.id}>
-                {columns.map((col, i) => {
-                  return (<td key={i}>{col?.colValue(row)}</td>)
-                })}
-              </tr>)
-            })
-          }
-        </tbody>
-      </Table>
-       {/* <Pagination>
+          <Tbody>
+            {
+              data.map((row) => {
+                return (<Tr key={row.id}>
+                  {columns.map((col, i) => {
+                    return (<td key={i}>{col?.colValue(row)}</td>)
+                  })}
+                </Tr>)
+              })
+            }
+          </Tbody>
+
+        </Table>
+        {/* <Pagination>
         <Pagination.First />
         <Pagination.Prev /> 
          {Array(countPages).fill(0).map((_, i) => {
@@ -96,7 +79,9 @@ function TableCustom({ data, columns }) {
                     </Form.Select>
                 </Col>
             </Row> */}
-    </>
+      </TableContainer>
+    </Skeleton>
+
   );
 }
 

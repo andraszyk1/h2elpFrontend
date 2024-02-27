@@ -1,6 +1,6 @@
+import { Box, Divider, Flex, Spacer, Stack, Text } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import { useEffect, useState } from "react";
-import { Col, Container, Row } from "react-bootstrap";
 import { useDispatch } from 'react-redux';
 import * as Yup from "yup";
 import { MySelect, statusOpcje } from '.';
@@ -18,9 +18,9 @@ const TicketsFilterForm = () => {
         let outputArray = Array.from(new Set(arr))
         return outputArray
     }
-    useEffect(()=>{
+    useEffect(() => {
         dispatch(clearFilters())
-    },[dispatch])
+    }, [dispatch])
     useEffect(() => {
         if (isSuccess) {
             const CategoriesArray = data?.map(ticket => (
@@ -52,7 +52,7 @@ const TicketsFilterForm = () => {
                     status: "",
                     category: "",
                     tworca: "",
-                    temat:"",
+                    temat: "",
                 }}
                 validationSchema={Yup.object({
                     status: Yup.mixed().notRequired(),
@@ -65,24 +65,12 @@ const TicketsFilterForm = () => {
                     setSubmitting(false);
                 }}
             >
-
-                <Form>
-                    <Row >
-                        <Col className="mb-2" xs={12} sm={4} md={4} lg={3} xl={2} xxl={2}>
-                            <MySelect setFilter={handleSetFilter} name="category" fieldName="category" options={uniqueCategories?.map((item) => ({ value: item, label: item }))} placeholder="Kategoria" />
-                        </Col>
-                        <Col className="mb-2" xs={12} sm={4} md={4} lg={3} xl={2} xxl={2}>
-                            <MySelect setFilter={handleSetFilter} name="status" fieldName="status" options={statusOpcje} placeholder="Status" />
-                        </Col>
-                        <Col className="mb-2" xs={12} sm={4} md={4} lg={3} xl={2} xxl={2} >
-                            <MySelect setFilter={handleSetFilter} name="tworca" fieldName="tworca" options={uniqueTworca?.map((item) => ({ value: item, label: item }))} placeholder="Twórca" />
-                        </Col>
-                        <Col className="mb-2" xs={12} sm={4} md={4} lg={3} xl={2} xxl={2} >
-                            <MySelect setFilter={handleSetFilter} name="temat" fieldName="temat" options={uniqueTemat?.map((item) => ({ value: item, label: item }))} placeholder="Temat" />
-                        </Col>
-                        {/* <button className='btn btn-dark my-2' type="submit">Filtruj</button> */}
-                    </Row>
-                </Form>
+                <Stack spacing="6" as="form" onSubmit={Formik.handleSubmit}>
+                    <MySelect setFilter={handleSetFilter} name="category" fieldName="category" options={uniqueCategories?.map((item) => ({ value: item, label: item }))} placeholder="Kategoria" />
+                    <MySelect setFilter={handleSetFilter} name="status" fieldName="status" options={statusOpcje} placeholder="Status" />
+                    <MySelect setFilter={handleSetFilter} name="tworca" fieldName="tworca" options={uniqueTworca?.map((item) => ({ value: item, label: item }))} placeholder="Twórca" />
+                    <MySelect setFilter={handleSetFilter} name="temat" fieldName="temat" options={uniqueTemat?.map((item) => ({ value: item, label: item }))} placeholder="Temat" />
+                </Stack>
 
             </Formik>
             }

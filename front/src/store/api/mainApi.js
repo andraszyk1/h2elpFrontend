@@ -1,10 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-const REMOTE_BASE_URL='https://hidden-dusk-87411-ba77d74a1dd4.herokuapp.com/'
-const LOCAL_BASE_URL= 'http://192.168.60.112:3000/'
+// const REMOTE_BASE_URL='https://hidden-dusk-87411-ba77d74a1dd4.herokuapp.com/'
+const LOCAL_BASE_URL= 'http://192.168.60.112:5000/'
 
 export const mainApi = createApi({
   reducerPath: 'ticketsApi',
-  baseQuery: fetchBaseQuery({ baseUrl:REMOTE_BASE_URL }),
+  baseQuery: fetchBaseQuery({ baseUrl:LOCAL_BASE_URL }),
   tagTypes: ['Tickets', 'UserTickets', 'Posts','TicketAccepts'],
   endpoints: (builder) => ({
     getTickets: builder.query({

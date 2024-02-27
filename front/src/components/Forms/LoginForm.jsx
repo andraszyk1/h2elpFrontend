@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { useLoginMutation } from "../../store/api/loginApi";
 import { authenticateAction } from '../../store/slices/authSlice';
 import { setShowToast } from "../../store/slices/toastSlice";
+import { Spinner } from "react-bootstrap";
 const LoginForm = () => {
   const [loginMutattion, { isLoading }] = useLoginMutation();
   const dispatch = useDispatch();
@@ -45,7 +46,7 @@ const LoginForm = () => {
       <Form>
         <MyTextInput name="username" type="text" label="Login (konto Windows)" />
         <MyTextInput name="password" type="password" label="Hasło" />
-        <button className='btn btn-dark my-2' type="submit">Zaloguj</button>
+        {isLoading ? <Spinner/> : <button className='btn btn-dark my-2' type="submit">Zaloguj</button>}
       </Form>
     </Formik>
    

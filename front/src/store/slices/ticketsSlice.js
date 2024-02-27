@@ -63,7 +63,7 @@ export const ticketsSlice = createSlice({
             state.resultTickets = sortedResult
         },
         setFiltersToTickets(state, { payload }) {
-            state.filters = payload
+            state.filters = {...state.filters,...payload}
 
         },
         clearFilters(state) {

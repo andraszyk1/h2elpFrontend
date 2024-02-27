@@ -11,24 +11,22 @@ export function TicketFilters() {
   const filters = useSelector(selectFilters)
 
   const { data: kategorieData } = useGetCategoriesQuery();
-useEffect(()=>{
-
-  console.log(filters);
-},[filters])
+  useEffect(() => {
+    console.log(filters);
+  }, [filters])
   const handleClearFilters = () => {
-
     dispatch(clearFilters({}))
     dispatch(setSearch(''))
-  
+
   }
 
   const handleFilters = (e, input) => {
 
     let value, name, target;
-    target = e.target ? e.target: e;
-    value = target?.value ;
+    target = e.target ? e.target : e;
+    value = target?.value;
     name = input ? input : target?.name
-    console.log(e,input)
+    console.log(e, input)
     console.log({ ...filters, [name]: value });
     dispatch(setFiltersToTickets({ ...filters, [name]: value }))
   }
@@ -40,22 +38,22 @@ useEffect(()=>{
         <Col sm={12} md={12} lg={6} xs={12} xl={6} xxl={6} >
           <Row >
             <Col className="mb-1" sm={12} md={12} lg={6} xs={12} xl={6} xxl={6} >
-        
-                <RSelect1 placeholder="Wybierz status" onChange={handleFilters} options={statusOpcje?.map((item)=>({value:item,label:item}))} inputName="status" defaultInputValue={filters?.status} defaultValue={filters?.status} />
-             
+
+              <RSelect1 placeholder="Wybierz status" onChange={handleFilters} options={statusOpcje?.map((item) => ({ value: item, label: item }))} inputName="status" defaultInputValue={filters?.status} defaultValue={filters?.status} />
+
             </Col>
             <Col className="mb-1" sm={12} md={12} lg={6} xs={12} xl={6} xxl={6} >
-             
-                {<RSelect1  placeholder='Wybierz kategorię' onChange={handleFilters} options={kategorieData?.map((item)=>({value:item.name,label:item.name}))} inputName="category" defaultInputValue={filters?.category} defaultValue={filters?.category} />}
-          
+
+              {<RSelect1 placeholder='Wybierz kategorię' onChange={handleFilters} options={kategorieData?.map((item) => ({ value: item.name, label: item.name }))} inputName="category" defaultInputValue={filters?.category} defaultValue={filters?.category} />}
+
             </Col>
-            
+
           </Row>
         </Col>
         <Col sm={12} md={12} lg={6} xs={12} xl={6} xxl={6} >
-        
-            <Button size="sm" title="Czyść filtry" variant="secondary" onClick={handleClearFilters}><AiOutlineClose /> Czyść filtry</Button>
-        
+
+          <Button size="sm" title="Czyść filtry" variant="secondary" onClick={handleClearFilters}><AiOutlineClose /> Czyść filtry</Button>
+
         </Col>
       </Row>
     </Form>

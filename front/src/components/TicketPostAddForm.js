@@ -1,101 +1,70 @@
-import React, { useState } from "react"
-import { useAddPostMutation } from '../store/api/postsApi';
-import { Alert, Spinner, Form, Button, Row, Col, Card } from "react-bootstrap";
-import { useNavigate, useParams } from 'react-router-dom';
+import { Alert, AlertDescription, AlertIcon, AlertTitle, Button, FormControl, Stack } from "@chakra-ui/react";
+import { Formik } from "formik";
 import { useSelector } from 'react-redux';
-// import TinyMce from "./TinyMce";
+import { useParams } from 'react-router-dom';
+import * as Yup from "yup";
+import { useAddPostMutation } from '../store/api/postsApi';
+import { MyTextInput } from "./Forms";
 export const TicketPostAddForm = () => {
     const account = useSelector(state => state.auth.loggedUser);
-    const navigate = useNavigate()
     const { id } = useParams()
-    const [addPost, { isLoading: isLoadingAddPost }] = useAddPostMutation();
-    const [newPost, setNewPost] = useState({
-        login: account.login, ticketId: id, content: ""
-    })
-    const [validated, setValidated] = useState(false);
+    const [addPost, { isLoading,error }] = useAddPostMutation();
 
-
-    const handleInputChange = (e, input) => {
-        let value, name, target;
-        target = e.target ? e.target : e;
-        if (Array.isArray(e)) {
-            name = input
-            value = e.map((item) => {
-                return {
-                    opiekunId: item.value
-                }
-            })
-        }
-        else {
-            value = target.type === 'checkbox' ? target.checked : target.value;
-            name = input ? input : target.name
-        }
-        setNewPost({
-            ...newPost,
-            [name]: value,
-        });
-    };
-
-
-    let canSave = Object.values(newPost).every((x) => x ?? '')
-
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        const form = event.currentTarget;
-        if (form.checkValidity() === false) {
-            event.stopPropagation();
-        }
-
-        setValidated(true);
-        try {
-            if (validated && canSave) {
-                await addPost(newPost);
-                setNewPost({
-                    login: account.login, ticketId: id, content: ""
-                })
-            }
-
-        } catch (error) {
-            console.error(error);
-        }
-    }
-
-    let content
-
-    content =
-        <>
-            <Card className="shadow" style={{ padding: 0 }}>
-                <Card.Header><b>Dodaj komentarz</b></Card.Header>
-                <Form noValidate validated={validated} onSubmit={handleSubmit}>
-                    <Col>
-                        <Row className="mb-1 p-1">
-                            {/* <TinyMce/> */}
-                            <Form.Group as={Col} controlId="validationCustom04">
-                                <Form.Control required value={newPost?.content}
-                                    as="textarea"
-                                    style={{ height: '50px' }}
-                                    placeholder="Treść komentarza"
-                                    name="content"
-                                    onChange={handleInputChange} />
-                                <Form.Control.Feedback type="invalid">
-                                    Wpisz treść
-                                </Form.Control.Feedback>
-                            </Form.Group>
-                        </Row>
-                        <Row>
-                            <Col className="m-1">
-                            <Button type="submit" size="sm" title="Dodaj" variant="dark" onClick={handleSubmit} >
-                                {isLoadingAddPost ? <Spinner /> : "Dodaj"}
-                            </Button>
-                            </Col>
-                        </Row>
-                    </Col>
-                </Form>
-            </Card>
-        </>
     return (
         <>
-            {content}
+            <Formik
+                initialValues={{ login: account.login, ticketId: id, content: "" }}
+                validationSchema={Yup.object({
+                    content: Yup.string()
+                        .required("Podaj treść komentarza"),
+                })}
+                onSubmit={async (newPost,{resetForm}) => {
+                    await addPost(newPost);
+                    resetForm()
+                }}
+            >
+                {(Formik) => (
+
+                    <Stack spacing="6" as="form" onSubmit={Formik.handleSubmit}>
+                        {error && (
+                            <Alert
+                                alignItems="center"
+                                justifyContent="center"
+                                textAlign="center"
+                            >
+                                <AlertIcon />
+                                <AlertTitle>Przepraszamy</AlertTitle>
+                                <AlertDescription>{error}</AlertDescription>
+                            </Alert>
+                        )}
+
+                        <Stack spacing="5">
+                            <FormControl>
+                                <MyTextInput
+                                    type="textarea"
+                                    name="content"
+                                    placeholder="Treść komentarza..."
+                                    rows="4"
+                                />
+
+                            </FormControl>
+                        </Stack>
+                        <Stack spacing="6">
+                            <Button
+                               variant='outline' colorScheme="blue"
+ 
+                                size="sm"
+                                fontSize="sm"
+                                isLoading={isLoading}
+                                type="submit"
+                            >
+                                Dodaj
+                            </Button>
+                        </Stack>
+                    </Stack>
+
+                )}
+            </Formik>
         </>
 
     )
