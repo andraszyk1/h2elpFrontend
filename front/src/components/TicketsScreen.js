@@ -76,6 +76,17 @@ export default function TicketsScreen() {
             sort: true,
         },
         {
+            colName: "Temat",
+            colValue: item => item?.temat,
+            filter: {
+                active: true, name: 'temat', initialValue: filters?.temat, options: data?.map((option) => ({
+                    value: option?.temat,
+                    label: option?.temat
+                }))
+            },
+            sort: true
+        },
+        {
             colName: "Status",
             colValue: item => item?.status,
             filter: {
@@ -110,17 +121,7 @@ export default function TicketsScreen() {
             },
             sort: true
         },
-        {
-            colName: "Temat",
-            colValue: item => item?.temat,
-            filter: {
-                active: true, name: 'temat', initialValue: filters?.temat, options: data?.map((option) => ({
-                    value: option?.temat,
-                    label: option?.temat
-                }))
-            },
-            sort: true
-        },
+     
         {
             colName: "Utworzono",
             colValue: item => formatDate(item?.createdAt,'dateWithTime'),

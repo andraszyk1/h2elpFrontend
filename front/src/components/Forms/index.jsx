@@ -102,13 +102,12 @@ export const AsyncSelectUsers = ({ isMulti, resetInput, inputName, defaultInputV
     label: option.name + " " + option.surname + " " + "(" + option.login + ")"
   }));
   const loadOptions = async (value, callback) => {
-
     callback(options)
     setValue(value);
   };
   const handleOnChange = (e) => {
     console.log(e);
-    setValue(e)
+    setValue(e?.value??'')
   }
 
   return (
@@ -204,7 +203,7 @@ export function MySelect({ fieldName, label, placeholder, setFilter, options, ..
 
     <Select
       styles={meta.touched && meta.error ? colourStylesAlert : colourStyles}
-      defaultValue={options.find((option) => option.value === field.value)}
+      defaultValue={options?.find((option) => option.value === field.value)}
       placeholder={placeholder}
       onChange={handleOnChange}
       options={options}
